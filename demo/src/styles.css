@@ -4,13 +4,26 @@
   box-sizing: border-box;
 }
 
+/* Override the extension's `html, body, #root { height: 100% }` rule
+   imported from src/sidepanel/styles.css. In the extension context the
+   side panel is exactly viewport height and that's correct. In the demo
+   the chrome window can be much taller than the viewport, so we need
+   the page to actually scroll — which only happens when the document
+   height is allowed to grow past 100vh. height:auto + min-height:100vh
+   gives us "at least full viewport, grows with content". */
+html,
+body,
+#root {
+  height: auto;
+  min-height: 100vh;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
   background: linear-gradient(135deg, #f5f3ff 0%, #ecfdf5 50%, #fef3c7 100%);
-  min-height: 100vh;
   color: #111827;
 }
 
@@ -18,7 +31,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   padding: 32px 24px;
 }
 
