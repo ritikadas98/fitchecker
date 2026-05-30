@@ -1434,3 +1434,23 @@ body {
 .hm-images .pdp-mock-gallery {
   margin-bottom: 0;
 }
+
+/* H&M gallery follows a wide-split-wide-split pattern: the 1st and 4th
+   images span the full row as hero shots, while the 2nd-3rd and 5th-6th
+   sit side-by-side beneath them. Matches the real H&M PDP composition.
+   Works with any image count (3 → just the first half of the pattern,
+   6 → the full pattern). */
+.hm-images .pdp-mock-gallery {
+  grid-template-columns: 1fr 1fr;
+}
+.hm-images .pdp-mock-gallery .pdp-mock-photo:nth-child(1),
+.hm-images .pdp-mock-gallery .pdp-mock-photo:nth-child(4) {
+  grid-column: 1 / -1;
+  aspect-ratio: 4 / 5;
+}
+/* Cancel the generic .three rule (3rd-child full-width) when inside .hm-images
+   — H&M's full-width slots are 1st and 4th, not 3rd. */
+.hm-images .pdp-mock-gallery.three .pdp-mock-photo:nth-child(3) {
+  grid-column: auto;
+  aspect-ratio: 3 / 4;
+}

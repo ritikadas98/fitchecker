@@ -62,7 +62,7 @@ function ImageGrid({ fixture }: Props) {
       : "pdp-mock-gallery multi";
   return (
     <div className={className}>
-      {imageUrls.slice(0, 4).map((url, i) => (
+      {imageUrls.slice(0, 6).map((url, i) => (
         <img
           key={i}
           src={url}
