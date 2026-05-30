@@ -772,187 +772,432 @@ body {
   font-weight: 700;
 }
 
-/* === AJIO ============================================================== */
+/* === AJIO (near-clone of real PDP) ===================================== */
 
 .ajio-pdp {
-  font-family: "Inter", "Helvetica Neue", system-ui, sans-serif;
-  color: #2e2e2e;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  color: #26283d;
+  margin: -32px;
 }
+
+/* Top utility bar ---------------------------------------------------- */
+.ajio-utility-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  padding: 10px 32px;
+  font-size: 13px;
+  background: #fff;
+}
+.ajio-utility-link {
+  color: #26283d;
+  cursor: pointer;
+}
+.ajio-utility-link:hover {
+  text-decoration: underline;
+}
+.ajio-luxe-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Main header --------------------------------------------------------- */
+.ajio-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 10px 32px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+.ajio-logo {
+  font-size: 34px;
+  font-weight: 700;
+  color: #26283d;
+  letter-spacing: -1px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.ajio-nav {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.ajio-nav-item {
+  font-size: 14px;
+  font-weight: 500;
+  color: #26283d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ajio-nav-caret {
+  font-size: 9px;
+  color: #6b7280;
+}
+.ajio-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 24px;
+  padding: 10px 16px;
+  min-width: 0;
+}
+.ajio-search-placeholder {
+  font-size: 14px;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ajio-header-icons {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.ajio-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #26283d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Breadcrumb ---------------------------------------------------------- */
+.ajio-breadcrumb {
+  font-size: 13px;
+  color: #6b7280;
+  padding: 16px 32px;
+  background: #fff;
+}
+
+/* Product grid -------------------------------------------------------- */
 .ajio-grid {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 28px;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  background: #fff;
+  padding: 0 32px 32px;
 }
 .ajio-brand {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #1c1c1c;
-  margin: 0 0 4px;
+  letter-spacing: 1.5px;
+  color: #846324;
+  margin: 0 0 8px;
 }
 .ajio-title {
-  font-size: 14px;
-  color: #555;
-  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #26283d;
+  margin: 0 0 14px;
   line-height: 1.4;
 }
 .ajio-rating {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 .ajio-rating-square {
-  background: #b91c1c;
+  background: #1f9d55;
   color: #fff;
-  padding: 3px 8px;
-  font-size: 12px;
+  padding: 3px 10px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 2px;
 }
 .ajio-rating-count {
-  color: #6b7280;
-  font-size: 13px;
+  color: #26283d;
+  font-size: 14px;
+  font-weight: 500;
 }
+
+/* Price block --------------------------------------------------------- */
 .ajio-price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 4px;
-  flex-wrap: wrap;
+  margin-top: 16px;
 }
 .ajio-price {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
-  color: #1c1c1c;
+  color: #26283d;
+}
+.ajio-mrp-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
 }
 .ajio-mrp {
   color: #6b7280;
   text-decoration: line-through;
-  font-size: 13px;
+  font-size: 15px;
 }
 .ajio-discount {
-  color: #ea580c;
-  font-weight: 600;
-  font-size: 13px;
+  color: #846324;
+  font-weight: 700;
+  font-size: 15px;
 }
 .ajio-tax {
   color: #6b7280;
-  font-size: 11px;
-  margin-bottom: 16px;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 18px;
 }
+
+/* Offer box ----------------------------------------------------------- */
 .ajio-offer {
-  background: #fef3c7;
-  border: 1px dashed #d97706;
+  display: flex;
+  align-items: stretch;
+  border: 1px dashed #846324;
+  border-radius: 2px;
+  background: #fff;
+  font-size: 13px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.ajio-offer-left {
+  background: #fdfaf2;
   padding: 10px 12px;
   display: flex;
-  gap: 12px;
+  flex-direction: column;
   align-items: flex-start;
-  border-radius: 4px;
-  font-size: 12px;
-  margin-bottom: 18px;
+  justify-content: center;
+  border-right: 1px dashed #846324;
+  font-size: 11px;
+  color: #26283d;
+  min-width: 90px;
 }
 .ajio-offer-label {
-  background: #d97706;
+  background: #846324;
   color: #fff;
-  padding: 2px 8px;
-  font-weight: 700;
+  padding: 2px 8px 2px 10px;
+  font-weight: 600;
   font-size: 11px;
-  border-radius: 2px;
-  white-space: nowrap;
+  align-self: flex-start;
+  margin-bottom: 6px;
+  position: relative;
+  margin-left: -12px;
 }
-.ajio-offer-body {
-  flex: 1;
-  line-height: 1.5;
-  color: #422006;
+.ajio-offer-code {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  line-height: 1.4;
 }
-.ajio-offer-sub {
+.ajio-offer-code strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #26283d;
+}
+.ajio-tc {
+  color: #2563eb;
   font-size: 11px;
   margin-top: 2px;
+  cursor: pointer;
 }
-.ajio-color-row {
+.ajio-offer-right {
+  flex: 1;
+  padding: 10px 12px;
+  background: #f0f7fc;
+}
+.ajio-bbs-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 18px;
-}
-.ajio-color-label {
+  gap: 6px;
+  margin-bottom: 4px;
   font-size: 13px;
-  color: #6b7280;
+  color: #26283d;
+}
+.ajio-bbs-pill {
+  background: #2c6cb1;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 10px;
+  text-transform: lowercase;
+}
+.ajio-offer-desc {
+  font-size: 12px;
+  color: #26283d;
+  line-height: 1.4;
+}
+.ajio-offer-link {
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.ajio-more-offers {
+  text-align: right;
+  color: #26283d;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+/* Divider ------------------------------------------------------------ */
+.ajio-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 16px 0;
+}
+
+/* Color --------------------------------------------------------------- */
+.ajio-color-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.ajio-color-name {
+  font-size: 13px;
+  color: #26283d;
+  margin-bottom: 8px;
 }
 .ajio-color-swatch {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1px solid #d1d5db;
-  background: linear-gradient(135deg, #ec4899 0%, #be123c 100%);
+  margin: 0 auto;
+}
+
+/* Size selector ------------------------------------------------------- */
+.ajio-size-section {
+  text-align: center;
+  margin-bottom: 16px;
 }
 .ajio-size-label {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #1c1c1c;
+  font-size: 14px;
+  color: #26283d;
+  margin-bottom: 14px;
+}
+.ajio-size-uni {
+  color: #6b7280;
+  font-size: 12px;
+}
+.ajio-sizes-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.ajio-size-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  font-size: 14px;
+  color: #26283d;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ajio-sizes {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 8px;
 }
 .ajio-size {
-  min-width: 44px;
+  width: 44px;
   height: 44px;
-  padding: 0 10px;
   border-radius: 50%;
   border: 1px solid #c0c0c0;
   background: #fff;
   font-size: 13px;
-  color: #1c1c1c;
+  color: #26283d;
   cursor: pointer;
   font-family: inherit;
 }
 .ajio-size:hover {
-  border-color: #1c1c1c;
+  border-color: #26283d;
 }
 .ajio-size-chart-link {
   background: none;
   border: none;
-  color: #1c1c1c;
-  font-size: 12px;
-  padding: 8px 0 16px;
+  color: #2563eb;
+  font-size: 13px;
   cursor: pointer;
   font-family: inherit;
-  display: flex;
+  display: inline-flex;
   gap: 6px;
   align-items: center;
+  margin: 0 auto;
 }
+
+/* Delivery banner ----------------------------------------------------- */
+.ajio-delivery-banner {
+  background: #fdf6e3;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #26283d;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  border-radius: 2px;
+}
+
+/* CTAs --------------------------------------------------------------- */
 .ajio-cta-bag {
-  background: #6b4d23;
+  background: #846324;
   color: #fff;
   border: none;
-  padding: 14px 24px;
-  font-size: 13px;
+  padding: 16px;
+  font-size: 14px;
   font-weight: 600;
   width: 100%;
   cursor: pointer;
   font-family: inherit;
   letter-spacing: 1px;
-  margin-bottom: 8px;
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.ajio-cta-bag:hover {
+  background: #6e521c;
+}
+.ajio-cta-tagline {
+  text-align: center;
+  font-size: 11px;
+  color: #6b7280;
+  letter-spacing: 1px;
+  padding: 10px 0;
 }
 .ajio-cta-wish {
   background: #fff;
-  color: #6b4d23;
-  border: 1px solid #6b4d23;
-  padding: 14px 24px;
-  font-size: 13px;
+  color: #846324;
+  border: 1px solid #846324;
+  padding: 16px;
+  font-size: 14px;
   font-weight: 600;
   width: 100%;
   cursor: pointer;
   font-family: inherit;
   letter-spacing: 1px;
-  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 /* === H&M =============================================================== */
