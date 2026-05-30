@@ -20,7 +20,16 @@
 
 const SKIN_R_B_DIFF = 8;
 const LUM_MIN = 80;
-const LUM_MAX = 252;
+// LUM_MAX intentionally above the 0-255 pixel range so pure-white fabric
+// pixels (lum=255) still get tinted. Earlier versions used 252 to skip
+// "pure highlights" but that left flat-white garment assets like
+// female_anarkali.png untouched — only their thin gray outlines fell
+// inside the window, so the dress rendered as a ghostly white shape
+// instead of filling with the recommendation-tier color. The downstream
+// formula (target × normalized_luminance × 0.92 + 18) already caps
+// bright pixels gracefully via Math.min(255, ...), so the upper bound
+// here serves no real protective purpose.
+const LUM_MAX = 256;
 const ALPHA_MIN = 30;
 const TINT_LUM_SCALE = 0.92;
 const TINT_LUM_FLOOR = 18;
