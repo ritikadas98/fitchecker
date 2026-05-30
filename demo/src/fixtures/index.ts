@@ -4,6 +4,7 @@ import { myntraFlyingMachineTshirt } from "./myntra-flying-machine-tshirt";
 import { myntraSnitchTrousers } from "./myntra-snitch-trousers";
 import { myntraInddusMaxi } from "./myntra-inddus-maxi";
 import { ajioRangmanchKurta } from "./ajio-rangmanch-kurta";
+import { ajioRituKumarAnarkali } from "./ajio-ritu-kumar-anarkali";
 import { ajioIndusRouteKurta } from "./ajio-indus-route-kurta";
 import { ajioLevisJeans } from "./ajio-levis-jeans";
 import { hmBlouse } from "./hm-blouse";
@@ -15,6 +16,7 @@ export type FixtureKey =
   | "myntra-snitch-trousers"
   | "myntra-inddus-maxi"
   | "ajio-rangmanch-kurta"
+  | "ajio-ritu-kumar-anarkali"
   | "ajio-indus-route-kurta"
   | "ajio-levis-jeans"
   | "hm-blouse"
@@ -57,6 +59,7 @@ export const FIXTURES: Record<FixtureKey, Fixture> = {
   "myntra-snitch-trousers": myntraSnitchTrousers,
   "myntra-inddus-maxi": myntraInddusMaxi,
   "ajio-rangmanch-kurta": ajioRangmanchKurta,
+  "ajio-ritu-kumar-anarkali": ajioRituKumarAnarkali,
   "ajio-indus-route-kurta": ajioIndusRouteKurta,
   "ajio-levis-jeans": ajioLevisJeans,
   "hm-blouse": hmBlouse,
@@ -73,6 +76,7 @@ export const FIXTURE_ORDER: FixtureKey[] = [
   "myntra-snitch-trousers",
   "myntra-inddus-maxi",
   "ajio-rangmanch-kurta",
+  "ajio-ritu-kumar-anarkali",
   "ajio-indus-route-kurta",
   "ajio-levis-jeans",
   "hm-blouse",

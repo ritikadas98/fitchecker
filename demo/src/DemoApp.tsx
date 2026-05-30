@@ -47,7 +47,7 @@ export function DemoApp() {
         <h1>FitCheck Interactive Demo</h1>
         <p>
           Enter your measurements once. Click the tabs to compare fit across
-          nine products on Myntra, AJIO, and H&amp;M India — mens and womens, tops,
+          ten products on Myntra, AJIO, and H&amp;M India — mens and womens, tops,
           bottoms, dresses, and ethnic wear. The side panel runs the real fit math
           against each product's actual size chart.
         </p>
