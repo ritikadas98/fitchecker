@@ -282,6 +282,13 @@ body {
 .pdp-mock-gallery.multi {
   grid-template-columns: 1fr 1fr;
 }
+.pdp-mock-gallery.three {
+  grid-template-columns: 1fr 1fr;
+}
+.pdp-mock-gallery.three .pdp-mock-photo:nth-child(3) {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 10;
+}
 .pdp-mock-photo {
   width: 100%;
   aspect-ratio: 3 / 4;

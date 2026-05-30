@@ -52,8 +52,14 @@ function ImageGrid({ fixture }: Props) {
       </div>
     );
   }
+  // Three-image case gets its own class so the third photo can span full
+  // width below the first two — matches H&M's actual gallery layout.
   const className =
-    imageUrls.length === 1 ? "pdp-mock-gallery single" : "pdp-mock-gallery multi";
+    imageUrls.length === 1
+      ? "pdp-mock-gallery single"
+      : imageUrls.length === 3
+      ? "pdp-mock-gallery three"
+      : "pdp-mock-gallery multi";
   return (
     <div className={className}>
       {imageUrls.slice(0, 4).map((url, i) => (

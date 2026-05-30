@@ -38,6 +38,7 @@ export const hmBlouse: Fixture = {
   price: "₹1,499",
   productImageLabel: "Tie-Front Blouse",
   imageUrls: [
+    "https://image.hm.com/assets/hm/79/4d/794d65983fd430ebc6f834ed13dbb4db3fb6d8a4.jpg?imwidth=720",
     "https://image.hm.com/assets/hm/0d/6f/0d6fe7c52be2ae185a01aaf3d0c6500053bd0b19.jpg?imwidth=720",
     "https://image.hm.com/assets/hm/04/9c/049ca788951f8e7588f485d7ea016f285f64796f.jpg?imwidth=720",
   ],

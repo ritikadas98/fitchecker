@@ -38,9 +38,8 @@ export const hmSweatpants: Fixture = {
   price: "₹1,299",
   productImageLabel: "Relaxed Fit Sweatpants",
   imageUrls: [
+    "https://image.hm.com/assets/hm/d8/a8/d8a85a6bcbdfb16750451b8ba44b05634d4dfd6f.jpg?imwidth=720",
     "https://image.hm.com/assets/hm/36/22/36226f7c7886e20af4c1ad3df6e21bcf276e257d.jpg?imwidth=720",
     "https://image.hm.com/assets/hm/37/1c/371c281e281b1c75f3337984110479240e6c2d21.jpg?imwidth=720",
-    "https://image.hm.com/assets/hm/1f/2a/1f2a844ca920ac8917e9325bb9d2a42ccde920b1.jpg?imwidth=720",
-    "https://image.hm.com/assets/hm/b8/5b/b85be7b1fb12ea62271f18c4ce7271138d47b696.jpg?imwidth=720",
   ],
 };
