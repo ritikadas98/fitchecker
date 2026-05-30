@@ -818,12 +818,14 @@ body {
   border-bottom: 1px solid #e5e7eb;
 }
 .ajio-logo {
-  font-size: 34px;
-  font-weight: 700;
-  color: #26283d;
-  letter-spacing: -1px;
   flex-shrink: 0;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+.ajio-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
 }
 .ajio-nav {
   display: flex;

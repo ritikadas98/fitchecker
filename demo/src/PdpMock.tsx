@@ -373,7 +373,13 @@ function AjioPdp({ fixture }: Props) {
 
       {/* Main header */}
       <header className="ajio-header">
-        <div className="ajio-logo">AJIO</div>
+        <div className="ajio-logo">
+          <img
+            src={`${import.meta.env.BASE_URL}ajio-Logo.svg`}
+            alt="AJIO"
+            className="ajio-logo-img"
+          />
+        </div>
         <nav className="ajio-nav">
           <a className="ajio-nav-item">MEN <span className="ajio-nav-caret">▾</span></a>
           <a className="ajio-nav-item">WOMEN <span className="ajio-nav-caret">▾</span></a>
