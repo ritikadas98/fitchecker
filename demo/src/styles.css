@@ -222,12 +222,19 @@ body {
 
 .chrome-content {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  /* minmax(0, 1fr) — NOT plain 1fr — so the PDP column is genuinely
+     allowed to shrink. With plain 1fr, the column would stretch to fit
+     its content's min-width (e.g. the Myntra header with logo + 7 nav
+     items + search + 3 icons), pushing the side panel past the chrome
+     window's right edge where overflow:hidden then clips it. */
+  grid-template-columns: minmax(0, 1fr) 400px;
   background: #f8f9fa;
 }
 
 .chrome-pdp {
   padding: 32px;
+  /* Lets the PDP children compress instead of forcing the column wide. */
+  min-width: 0;
   /* No internal scroll — the whole page scrolls as one unit (the chrome
      window grows with content, and the document body scrollbar handles
      overflow). This matches how a real Chrome window behaves: you don't
