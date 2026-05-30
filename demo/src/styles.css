@@ -106,6 +106,18 @@ body {
   gap: 2px;
   flex: 1;
   align-items: end;
+  /* Allow this flex container to actually shrink and, as a last resort,
+     scroll horizontally if even minimum-width tabs would overflow. */
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.chrome-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+.chrome-tabs::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
 }
 
 .chrome-tab {
@@ -120,11 +132,13 @@ body {
   font-size: 12px;
   cursor: pointer;
   /* Share the tab strip width evenly when many tabs are open — matches
-     real Chrome's tab-shrink behavior. min-width:0 lets flex actually
-     shrink children below their content size so labels can truncate. */
+     real Chrome's tab-shrink behavior. min-width:0 + flex:1 1 0 lets
+     each tab shrink as needed so 10 tabs fit comfortably. The label
+     also needs min-width:0 for its ellipsis truncation to actually kick
+     in inside the tab's flex container. */
   flex: 1 1 0;
   min-width: 0;
-  max-width: 180px;
+  max-width: 140px;
   text-align: left;
   transition: background 120ms;
   font-family: inherit;
@@ -152,6 +166,11 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* Critical for the ellipsis truncation to work inside the tab's flex
+     container — without min-width:0 the label keeps its intrinsic content
+     width and refuses to shrink. */
+  min-width: 0;
+  flex: 1;
 }
 
 .chrome-toolbar {
@@ -378,4 +397,485 @@ body {
   .demo-intro h1 {
     font-size: 24px;
   }
+}
+
+/* ========================================================================
+   Retailer-specific PDP styles
+   ======================================================================== */
+
+/* === Myntra ============================================================ */
+
+.myntra-pdp {
+  font-family: "Whitney", "Helvetica Neue", system-ui, sans-serif;
+  color: #282c3f;
+}
+.myntra-breadcrumb {
+  font-size: 11px;
+  color: #93959f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f5;
+  margin-bottom: 20px;
+}
+.myntra-breadcrumb strong {
+  color: #282c3f;
+  font-weight: 600;
+}
+.myntra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 28px;
+}
+.myntra-brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: #282c3f;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+.myntra-title {
+  font-size: 15px;
+  color: #535766;
+  margin: 4px 0 14px;
+}
+.myntra-rating {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #d4d5d9;
+  border-radius: 3px;
+  padding: 4px 10px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  gap: 6px;
+  background: #fff;
+}
+.myntra-rating-badge {
+  color: #14958f;
+  font-weight: 700;
+}
+.myntra-star {
+  color: #14958f;
+}
+.myntra-rating-sep {
+  color: #d4d5d9;
+}
+.myntra-rating-count {
+  color: #535766;
+  font-size: 13px;
+}
+.myntra-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.myntra-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #282c3f;
+}
+.myntra-mrp {
+  color: #7e818c;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+.myntra-discount {
+  color: #ff905a;
+  font-weight: 700;
+  font-size: 14px;
+}
+.myntra-tax {
+  color: #03a685;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.myntra-size-block {
+  margin-bottom: 24px;
+}
+.myntra-size-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+.myntra-size-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #282c3f;
+}
+.myntra-size-chart-link {
+  color: #ff3e6c;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.myntra-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.myntra-size {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid #d4d5d9;
+  background: #fff;
+  font-size: 13px;
+  color: #535766;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 120ms;
+}
+.myntra-size:hover {
+  border-color: #ff3e6c;
+  color: #ff3e6c;
+}
+.myntra-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.myntra-bag {
+  background: #ff3f6c;
+  color: #fff;
+  border: none;
+  padding: 14px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  flex: 1.4;
+  border-radius: 4px;
+  font-family: inherit;
+}
+.myntra-wish {
+  background: #fff;
+  color: #282c3f;
+  border: 1px solid #d4d5d9;
+  padding: 14px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  flex: 1;
+  border-radius: 4px;
+  font-family: inherit;
+}
+.myntra-promise {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f5;
+  font-size: 13px;
+  color: #535766;
+  line-height: 1.8;
+}
+
+/* === AJIO ============================================================== */
+
+.ajio-pdp {
+  font-family: "Inter", "Helvetica Neue", system-ui, sans-serif;
+  color: #2e2e2e;
+}
+.ajio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 28px;
+}
+.ajio-brand {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1c1c1c;
+  margin: 0 0 4px;
+}
+.ajio-title {
+  font-size: 14px;
+  color: #555;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+.ajio-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ajio-rating-square {
+  background: #b91c1c;
+  color: #fff;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 2px;
+}
+.ajio-rating-count {
+  color: #6b7280;
+  font-size: 13px;
+}
+.ajio-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.ajio-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1c1c1c;
+}
+.ajio-mrp {
+  color: #6b7280;
+  text-decoration: line-through;
+  font-size: 13px;
+}
+.ajio-discount {
+  color: #ea580c;
+  font-weight: 600;
+  font-size: 13px;
+}
+.ajio-tax {
+  color: #6b7280;
+  font-size: 11px;
+  margin-bottom: 16px;
+}
+.ajio-offer {
+  background: #fef3c7;
+  border: 1px dashed #d97706;
+  padding: 10px 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+.ajio-offer-label {
+  background: #d97706;
+  color: #fff;
+  padding: 2px 8px;
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.ajio-offer-body {
+  flex: 1;
+  line-height: 1.5;
+  color: #422006;
+}
+.ajio-offer-sub {
+  font-size: 11px;
+  margin-top: 2px;
+}
+.ajio-color-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.ajio-color-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+.ajio-color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #d1d5db;
+  background: linear-gradient(135deg, #ec4899 0%, #be123c 100%);
+}
+.ajio-size-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1c1c1c;
+}
+.ajio-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.ajio-size {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 50%;
+  border: 1px solid #c0c0c0;
+  background: #fff;
+  font-size: 13px;
+  color: #1c1c1c;
+  cursor: pointer;
+  font-family: inherit;
+}
+.ajio-size:hover {
+  border-color: #1c1c1c;
+}
+.ajio-size-chart-link {
+  background: none;
+  border: none;
+  color: #1c1c1c;
+  font-size: 12px;
+  padding: 8px 0 16px;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.ajio-cta-bag {
+  background: #6b4d23;
+  color: #fff;
+  border: none;
+  padding: 14px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  border-radius: 0;
+}
+.ajio-cta-wish {
+  background: #fff;
+  color: #6b4d23;
+  border: 1px solid #6b4d23;
+  padding: 14px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 1px;
+  border-radius: 0;
+}
+
+/* === H&M =============================================================== */
+
+.hm-pdp {
+  font-family: "HM Sans", "Helvetica Neue", Arial, sans-serif;
+  color: #222;
+}
+.hm-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 32px;
+}
+.hm-brand {
+  color: #e50010;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+.hm-title {
+  font-size: 22px;
+  font-weight: 400;
+  font-family: Georgia, "Times New Roman", serif;
+  margin: 0 0 14px;
+  color: #222;
+  line-height: 1.3;
+}
+.hm-price {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+.hm-members {
+  background: #faf3e8;
+  padding: 10px 14px;
+  font-size: 12px;
+  margin-bottom: 22px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-radius: 2px;
+}
+.hm-members a {
+  color: #222;
+  text-decoration: underline;
+}
+.hm-members-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e50010;
+}
+.hm-color {
+  font-size: 13px;
+  margin-bottom: 18px;
+  color: #222;
+}
+.hm-size-block {
+  margin-bottom: 24px;
+}
+.hm-size-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.hm-size-find {
+  color: #222;
+  text-decoration: underline;
+  font-size: 12px;
+}
+.hm-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.hm-size {
+  padding: 13px 16px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  color: #222;
+}
+.hm-size:hover {
+  background: #f5f5f5;
+}
+.hm-cta-bag {
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 8px;
+}
+.hm-cta-fav {
+  background: #fff;
+  color: #222;
+  border: 1px solid #222;
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Image gallery containers need to play nice with the new retailer grids.
+   The retailer "left column" (images) sets its own width via the parent
+   grid, so the gallery just fills it. */
+.myntra-images .pdp-mock-gallery,
+.ajio-images .pdp-mock-gallery,
+.hm-images .pdp-mock-gallery {
+  margin-bottom: 0;
 }
