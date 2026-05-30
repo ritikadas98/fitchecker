@@ -426,6 +426,11 @@ body {
   display: flex;
   align-items: center;
 }
+.myntra-logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
 .myntra-nav {
   display: flex;
   gap: 22px;
@@ -584,27 +589,6 @@ body {
   color: #03a685;
   font-size: 12px;
   font-weight: 700;
-}
-
-/* MORE COLORS --------------------------------------------------------- */
-.myntra-colors-label {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #282c3f;
-  margin-bottom: 12px;
-}
-.myntra-colors {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-.myntra-color-thumb {
-  width: 60px;
-  height: 80px;
-  border-radius: 2px;
-  border: 1px solid #f0f0f5;
-  cursor: pointer;
 }
 
 /* Size selector ------------------------------------------------------- */

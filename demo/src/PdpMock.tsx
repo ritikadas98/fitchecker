@@ -92,7 +92,7 @@ function priceToNumber(price: string): number {
  * the 3-line promise footer.
  */
 function MyntraPdp({ fixture }: Props) {
-  const { product, price, pdpImageGradient } = fixture;
+  const { product, price } = fixture;
   const sale = priceToNumber(price);
   const mrp = Math.round(sale * 2);
   const discount = Math.round((1 - sale / mrp) * 100);
@@ -107,32 +107,12 @@ function MyntraPdp({ fixture }: Props) {
     <div className="myntra-pdp">
       {/* Site header — logo, nav, search, account icons */}
       <header className="myntra-header">
-        <div className="myntra-logo" aria-label="Myntra">
-          <svg
-            width="48"
-            height="32"
-            viewBox="0 0 50 32"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient id="m-grad-1" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#fb7c8a" />
-                <stop offset="100%" stopColor="#fc4f7d" />
-              </linearGradient>
-              <linearGradient id="m-grad-2" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#f6588a" />
-                <stop offset="100%" stopColor="#c92b6a" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M 4 32 C 4 4, 26 4, 26 32 L 19 32 C 19 13, 11 13, 11 32 Z"
-              fill="url(#m-grad-1)"
-            />
-            <path
-              d="M 24 32 C 24 4, 46 4, 46 32 L 39 32 C 39 13, 31 13, 31 32 Z"
-              fill="url(#m-grad-2)"
-            />
-          </svg>
+        <div className="myntra-logo">
+          <img
+            src={`${import.meta.env.BASE_URL}myntra-logo.png`}
+            alt="Myntra"
+            className="myntra-logo-img"
+          />
         </div>
         <nav className="myntra-nav">
           <a className="myntra-nav-item">MEN</a>
@@ -246,29 +226,6 @@ function MyntraPdp({ fixture }: Props) {
           <div className="myntra-tax">inclusive of all taxes</div>
 
           <hr className="myntra-divider" />
-
-          {/* MORE COLORS */}
-          <div className="myntra-colors-label">MORE COLORS</div>
-          <div className="myntra-colors">
-            <div
-              className="myntra-color-thumb"
-              style={{
-                background: `linear-gradient(135deg, ${pdpImageGradient[0]} 0%, ${pdpImageGradient[1]} 100%)`,
-              }}
-            />
-            <div
-              className="myntra-color-thumb"
-              style={{
-                background: "linear-gradient(135deg, #9333ea 0%, #c026d3 100%)",
-              }}
-            />
-            <div
-              className="myntra-color-thumb"
-              style={{
-                background: "linear-gradient(135deg, #15803d 0%, #166534 100%)",
-              }}
-            />
-          </div>
 
           {/* Size selector */}
           <div className="myntra-size-block">
