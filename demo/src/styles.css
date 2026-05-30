@@ -1231,14 +1231,14 @@ body {
   border-bottom: 1px solid #f0f0f0;
 }
 .hm-logo {
-  color: #e50010;
-  font-size: 28px;
-  font-weight: 800;
-  font-style: italic;
-  font-family: Georgia, "Times New Roman", serif;
-  letter-spacing: -1.5px;
   flex-shrink: 0;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+.hm-logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
 }
 .hm-nav {
   display: flex;

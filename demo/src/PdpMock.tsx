@@ -577,7 +577,13 @@ function HmPdp({ fixture }: Props) {
 
       {/* Main header */}
       <header className="hm-header">
-        <div className="hm-logo">H&amp;M</div>
+        <div className="hm-logo">
+          <img
+            src={`${import.meta.env.BASE_URL}H%26M-Logo.svg`}
+            alt="H&M"
+            className="hm-logo-img"
+          />
+        </div>
         <nav className="hm-nav">
           <a className="hm-nav-item active">LADIES</a>
           <a className="hm-nav-item">MEN</a>
