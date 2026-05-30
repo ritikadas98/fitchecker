@@ -22,7 +22,7 @@ import { FitVerdict } from "../../src/sidepanel/components/FitVerdict";
 import { ProfileSetup } from "../../src/sidepanel/components/ProfileSetup";
 
 export function DemoApp() {
-  const [activeTab, setActiveTab] = useState<FixtureKey>("myntra-jeans");
+  const [activeTab, setActiveTab] = useState<FixtureKey>("myntra-flying-machine-tshirt");
   const [profile, setProfile] = useState<Profile | null | undefined>(undefined);
   const [editingProfile, setEditingProfile] = useState(false);
 
@@ -46,8 +46,9 @@ export function DemoApp() {
       <header className="demo-intro">
         <h1>FitCheck Interactive Demo</h1>
         <p>
-          Enter your measurements once. Click the tabs to switch between a Myntra,
-          AJIO, and H&amp;M India product. The side panel runs the real fit math
+          Enter your measurements once. Click the tabs to compare fit across
+          nine products on Myntra, AJIO, and H&amp;M India — mens and womens, tops,
+          bottoms, dresses, and ethnic wear. The side panel runs the real fit math
           against each product's actual size chart.
         </p>
       </header>

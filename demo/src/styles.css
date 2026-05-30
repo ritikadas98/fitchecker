@@ -115,11 +115,16 @@ body {
   border: none;
   background: rgba(0, 0, 0, 0.05);
   color: #5f6368;
-  padding: 10px 14px;
+  padding: 10px 12px;
   border-radius: 10px 10px 0 0;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
-  max-width: 280px;
+  /* Share the tab strip width evenly when many tabs are open — matches
+     real Chrome's tab-shrink behavior. min-width:0 lets flex actually
+     shrink children below their content size so labels can truncate. */
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 180px;
   text-align: left;
   transition: background 120ms;
   font-family: inherit;
@@ -244,6 +249,27 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Product photo gallery — 2x2 grid for multi-image, single hero for one. */
+.pdp-mock-gallery {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.pdp-mock-gallery.single {
+  grid-template-columns: 1fr;
+}
+.pdp-mock-gallery.multi {
+  grid-template-columns: 1fr 1fr;
+}
+.pdp-mock-photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  background: #f3f4f6;
 }
 
 .pdp-mock-brand {

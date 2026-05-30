@@ -11,18 +11,50 @@ interface Props {
 }
 
 export function PdpMock({ fixture }: Props) {
-  const { product, retailerName, retailerAccent, pdpImageGradient, price, productImageLabel } = fixture;
-  const imageStyle = {
-    background: `linear-gradient(135deg, ${pdpImageGradient[0]} 0%, ${pdpImageGradient[1]} 100%)`,
-  };
+  const {
+    product,
+    retailerName,
+    retailerAccent,
+    pdpImageGradient,
+    price,
+    productImageLabel,
+    imageUrls,
+  } = fixture;
+
+  const hasImages = imageUrls && imageUrls.length > 0;
+  const galleryClass = !hasImages
+    ? ""
+    : imageUrls!.length === 1
+    ? "pdp-mock-gallery single"
+    : "pdp-mock-gallery multi";
+
   return (
     <div className="pdp-mock">
       <div className="pdp-mock-retailer" style={{ color: retailerAccent }}>
         {retailerName}
       </div>
-      <div className="pdp-mock-image" style={imageStyle}>
-        <span>{productImageLabel}</span>
-      </div>
+      {hasImages ? (
+        <div className={galleryClass}>
+          {imageUrls!.slice(0, 4).map((url, i) => (
+            <img
+              key={i}
+              src={url}
+              alt={`${product.title} view ${i + 1}`}
+              className="pdp-mock-photo"
+              loading="lazy"
+            />
+          ))}
+        </div>
+      ) : (
+        <div
+          className="pdp-mock-image"
+          style={{
+            background: `linear-gradient(135deg, ${pdpImageGradient[0]} 0%, ${pdpImageGradient[1]} 100%)`,
+          }}
+        >
+          <span>{productImageLabel}</span>
+        </div>
+      )}
       <div className="pdp-mock-brand">{product.brand}</div>
       <h2 className="pdp-mock-title">{product.title}</h2>
       <div className="pdp-mock-price">{price}</div>
