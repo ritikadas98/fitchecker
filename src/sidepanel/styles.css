@@ -1,0 +1,473 @@
+/* ===========================================================================
+   FitCheck side panel — narrow column (~360px), light theme.
+   =========================================================================== */
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+
+button { font-family: inherit; cursor: pointer; }
+
+.panel { display: flex; flex-direction: column; min-height: 100vh; }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ececec;
+}
+
+.brand {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.2px;
+  color: #1e3a5f;
+}
+
+.icon-button {
+  background: transparent; border: none;
+  font-size: 16px; color: #888;
+  padding: 4px 8px; border-radius: 6px;
+}
+.icon-button:hover { background: #f4f4f4; }
+
+.loading { padding: 24px; color: #999; font-size: 13px; }
+
+/* === Profile setup ====================================================== */
+
+.profile-setup { padding: 16px; }
+.title { font-size: 16px; font-weight: 600; margin: 4px 0 4px; }
+.subtitle { font-size: 13px; color: #6b6b6b; margin: 0 0 20px; line-height: 1.4; }
+
+.field { margin-bottom: 16px; }
+.field-label {
+  display: block;
+  font-size: 11px; color: #6b6b6b;
+  margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.field-hint {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: #999;
+}
+
+.profile-setup input {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid #d8d8d8; border-radius: 6px;
+  font-size: 14px; font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.profile-setup input:focus { border-color: #1e3a5f; }
+
+.row { display: flex; gap: 8px; }
+.row input { flex: 1; }
+
+.segmented { display: flex; gap: 6px; }
+.seg {
+  flex: 1; padding: 8px;
+  border: 1px solid #d8d8d8; border-radius: 6px;
+  background: white; font-size: 13px; color: #444;
+}
+.seg.active {
+  background: #e6f1fb; color: #0c447c; border-color: #185fa5;
+}
+
+.actions { display: flex; gap: 8px; margin-top: 24px; }
+
+.primary, .secondary, .ghost {
+  flex: 1; padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px; font-weight: 500;
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+.primary { background: #1a1a1a; color: white; }
+.primary:disabled { background: #999; cursor: not-allowed; }
+.secondary {
+  background: white; color: #1a1a1a;
+  border-color: #c0c0c0;
+}
+.secondary:hover { background: #f4f4f4; }
+.ghost { background: transparent; color: #6b6b6b; }
+.ghost:hover { color: #1a1a1a; }
+
+/* === Verdict panel ====================================================== */
+
+.verdict { padding: 16px; }
+
+.product-meta { font-size: 11px; color: #999; margin: 0 0 2px; }
+.product-title {
+  font-size: 13px; color: #5f5e5a;
+  margin: 0 0 16px; line-height: 1.35;
+}
+
+.verdict-headline {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 10px;
+}
+
+.verdict-size {
+  font-size: 36px; font-weight: 700; line-height: 1;
+  color: #1a1a1a;
+}
+
+.verdict-fitname {
+  font-size: 16px; font-weight: 500; color: #2c2c2c;
+}
+
+.recommendation {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  margin-bottom: 18px;
+  border: 1px solid transparent;
+}
+
+.rec-icon {
+  display: inline-flex;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  background: white;
+}
+
+.rec-good { background: #eaf3de; color: #27500a; border-color: #c0dd97; }
+.rec-good .rec-icon { color: #27500a; }
+.rec-okay { background: #faeeda; color: #633806; border-color: #ef9f27; }
+.rec-okay .rec-icon { color: #633806; }
+.rec-poor { background: #fcebeb; color: #791f1f; border-color: #f09595; }
+.rec-poor .rec-icon { color: #791f1f; }
+
+/* === Silhouette: composite + tint + pins ============================== */
+
+.silhouette-wrap {
+  position: relative;
+  margin: 12px auto 18px;
+  background: #f9f9f7;
+  border-radius: 8px;
+  overflow: visible;            /* pins/tags can extend slightly outside */
+}
+
+.silhouette-wrap canvas {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+}
+
+.silhouette-empty {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  color: #999; font-size: 12px;
+  background: repeating-linear-gradient(
+    45deg, #f9f9f7, #f9f9f7 6px, #f3f3ef 6px, #f3f3ef 12px
+  );
+}
+
+/* Pin layer ------------------------------------------------------------- */
+
+.fit-indicators {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;          /* dots & tags re-enable on themselves */
+}
+
+.fit-pin-anchor {
+  position: absolute;
+  /* (left, top) set inline = pin anchor point in CSS px */
+  width: 0; height: 0;           /* zero-size positioning anchor */
+  pointer-events: auto;
+  outline: none;
+}
+
+.fit-pin-dot {
+  position: absolute;
+  /* Pin sits centered on the anchor */
+  transform: translate(-50%, -50%);
+  width: 22px; height: 22px;
+  border-radius: 11px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18), 0 0 0 2px white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  cursor: help;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.fit-pin-good .fit-pin-dot { color: white; background: #16a34a; box-shadow: 0 1px 3px rgba(0,0,0,0.20), 0 0 0 2px white; }
+.fit-pin-warn .fit-pin-dot { color: white; background: #d97706; box-shadow: 0 1px 3px rgba(0,0,0,0.20), 0 0 0 2px white; }
+.fit-pin-bad  .fit-pin-dot { color: white; background: #dc2626; box-shadow: 0 1px 3px rgba(0,0,0,0.20), 0 0 0 2px white; }
+.fit-pin-neutral .fit-pin-dot { color: white; background: #94a3b8; box-shadow: 0 1px 3px rgba(0,0,0,0.20), 0 0 0 2px white; }
+
+.fit-pin-anchor.open .fit-pin-dot {
+  transform: translate(-50%, -50%) scale(1.10);
+}
+
+/* Tag — anchored RIGHT-edge to the pin so it expands inward (leftward).
+   Sizing notes:
+   - Anchor is 0×0 (a positioning point), so the tag's CSS containing block
+     has zero width. Without `width: max-content` here, the shrink-to-fit
+     algorithm collapses the tag to min-content (= 1 character), making
+     even short words like "Hip" break character-by-character.
+   - `width: max-content` sizes the tag to its content; `max-width: 160px`
+     caps it so genuinely long messages still wrap and don't run off-panel. */
+.fit-pin-tag {
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 28px 5px 8px;     /* extra right padding so text doesn't sit under the pin */
+  border-radius: 14px;
+  background: rgba(28, 28, 32, 0.94);
+  color: white;
+  font-size: 11px; font-weight: 500;
+  line-height: 1.35;
+  width: max-content;
+  max-width: 160px;
+  white-space: normal;
+  overflow-wrap: break-word;     /* break only when a word genuinely overflows */
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-50%) translateX(8px);
+  transition: opacity 120ms ease, transform 120ms ease;
+  z-index: 2;
+}
+
+/* Tag visibility is driven by the React `.open` class only. We deliberately
+   do NOT trigger on `:hover` / `:focus` here, because focus on one pin
+   would stay sticky while hovering another, leaving multiple tags open. */
+.fit-pin-anchor.open .fit-pin-tag {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.fit-pin-tag-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px;
+  border-radius: 8px;
+  font-size: 10px; font-weight: 700;
+}
+
+.fit-pin-good .fit-pin-tag-icon { background: #16a34a; color: white; }
+.fit-pin-warn .fit-pin-tag-icon { background: #d97706; color: white; }
+.fit-pin-bad  .fit-pin-tag-icon { background: #dc2626; color: white; }
+.fit-pin-neutral .fit-pin-tag-icon { background: #94a3b8; color: white; }
+
+.fit-pin-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Per-axis analysis */
+.analysis {
+  border-top: 1px solid #ececec;
+  padding-top: 14px;
+  margin-bottom: 18px;
+}
+
+.axis { margin-bottom: 14px; }
+.axis:last-child { margin-bottom: 0; }
+
+.axis-headline {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.axis-headline strong { font-weight: 600; color: #1a1a1a; }
+
+.axis-label {
+  margin-left: auto;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-perfect { background: #27500a; }
+.status-good    { background: #639922; }
+.status-okay    { background: #ba7517; }
+.status-poor    { background: #a32d2d; }
+.status-unknown { background: #94a3b8; }
+
+.axis-detail {
+  font-size: 12px; color: #5f5e5a;
+  margin: 0; line-height: 1.5;
+  padding-left: 16px;
+}
+
+.section-label {
+  font-size: 11px; color: #6b6b6b;
+  margin: 0 0 8px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+
+.size-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(46px, 1fr));
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.size-btn {
+  position: relative;
+  padding: 10px 6px;
+  border: 1px solid #d8d8d8; border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+  text-align: center;
+  background: white;
+  color: #444;
+  transition: all 0.15s ease;
+}
+.size-btn:hover { background: #f4f4f4; }
+
+.size-btn-recommended { border-color: #97c459; }
+.size-btn-may_work    { border-color: #efc679; }
+.size-btn-not_recommended {
+  border-color: #e0e0e0;
+  color: #b0b0b0;
+}
+
+.size-btn.selected {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+  font-weight: 600;
+}
+.size-btn.selected:hover { background: #2c2c2c; }
+
+.rec-marker {
+  position: absolute;
+  top: -6px; right: -6px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #639922;
+  color: white;
+  font-size: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* === Fallback =========================================================== */
+
+.fallback {
+  padding: 24px 16px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+
+.fallback-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: #f4f4f4; color: #999;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.fallback-icon.warn { background: #faeeda; color: #633806; }
+
+.fallback-title { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+.fallback-body {
+  font-size: 13px; color: #6b6b6b;
+  margin: 0 0 20px; line-height: 1.5;
+  max-width: 280px;
+}
+
+.fallback-actions {
+  display: flex; flex-direction: column; gap: 8px;
+  width: 100%; margin-bottom: 16px;
+}
+.fallback-actions .secondary,
+.fallback-actions .ghost {
+  flex: none; width: 100%;
+}
+
+.report-link {
+  background: transparent; border: none;
+  font-size: 11px; color: #999;
+  text-decoration: underline; padding: 4px;
+}
+.report-link:hover { color: #1a1a1a; }
+
+/* === Refresh banner — sits below header, always visible ============== */
+
+.refresh-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f4f6fa;
+  border-bottom: 1px solid #e3e8f0;
+  font-size: 11px;
+  color: #5d6577;
+  line-height: 1.4;
+  flex: 0 0 auto;
+}
+
+.refresh-banner-icon {
+  flex: 0 0 auto;
+  font-size: 13px;
+  color: #1e3a5f;
+  line-height: 1;
+  margin-top: 1px;
+}
+
+.refresh-banner-text {
+  flex: 1 1 auto;
+}
+
+/* === Gender mismatch banner — full state, not a strip ================ */
+
+.mismatch-banner {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mismatch-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+.mismatch-body {
+  margin: 0;
+  font-size: 14px;
+  color: #4a5160;
+  line-height: 1.5;
+}
+
+.mismatch-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mismatch-actions .primary,
+.mismatch-actions .ghost {
+  width: 100%;
+}
+
+.mismatch-hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #7a8090;
+  line-height: 1.4;
+}
