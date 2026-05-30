@@ -1,11 +1,33 @@
 import { record } from "../../lib/analytics";
-import type { ExtractionResult } from "../../lib/types";
+import type { ExtractionResult, ParsedProduct } from "../../lib/types";
 
 interface Props {
   failure?: ExtractionResult;
+  /** Set when the adapter DID extract a product but the fit math couldn't
+   *  produce a verdict (e.g. chart missing the primary axis). Distinguishing
+   *  this from "not on a product page" prevents the misleading "Not on a
+   *  product page" copy when the user is clearly on one. */
+  product?: ParsedProduct;
 }
 
-export function Fallback({ failure }: Props) {
+export function Fallback({ failure, product }: Props) {
+  // Product was extracted but the math returned no verdict. Show a
+  // specific message instead of falling through to the "not on a PDP"
+  // branch (which would be wrong).
+  if (product && (!failure || failure.reason === "no_pdp")) {
+    return (
+      <div className="fallback">
+        <div className="fallback-icon warn" aria-hidden>!</div>
+        <p className="fallback-title">Can't compute a fit for this product</p>
+        <p className="fallback-body">
+          We read the product page but the size chart is missing a measurement
+          we need (usually bust, waist, or length). Try a different product, or
+          enter measurements manually.
+        </p>
+      </div>
+    );
+  }
+
   // No failure object means we're not on a supported PDP.
   if (!failure || failure.reason === "no_pdp") {
     return (

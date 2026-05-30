@@ -160,7 +160,7 @@ export function App() {
   return (
     <div className="panel">
       <Header onSettings={() => setEditingProfile(true)} />
-      <Fallback failure={failure} />
+      <Fallback failure={failure} product={product} />
     </div>
   );
 }

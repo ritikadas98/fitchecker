@@ -360,25 +360,35 @@ function fitForSize(
     const bodyBust = product.gender === "female" ? garment.bust : garment.chest;
     const bodyWaist = garment.waist;
     const bodyHip = garment.hip;
+    const garmentFlatBust = garmentFlatRow?.bust ?? garmentFlatRow?.chest;
+    const garmentFlatWaist = garmentFlatRow?.waist;
+    const garmentFlatHip = garmentFlatRow?.hip;
     const garmentLen = garment.length;
-    if (bodyBust === undefined) return null; // can't analyze without at least bust
+
+    // Bust is the primary axis for dresses. We need at least one source —
+    // body chart OR garment flat. analyzeWidth's ease-aware path can infer
+    // the other half from style/title when only one column is present
+    // (this is what Marks & Spencer products on Myntra hit: they ship
+    // ONLY Garment Measurement rows, no "To Fit Bust"). Without either,
+    // we genuinely have nothing to compare.
+    if (bodyBust === undefined && garmentFlatBust === undefined) return null;
 
     const bustVerdict = analyzeWidth({
       category: "dress",
       axisLabel: "Bust",
       bodyChart: bodyBust,
-      garmentFlat: garmentFlatRow?.bust ?? garmentFlatRow?.chest,
+      garmentFlat: garmentFlatBust,
       userBody: profile.upperBody,
       garmentStyle: product.garmentStyle,
       title: product.title,
     });
 
-    const waistVerdict = bodyWaist !== undefined
+    const waistVerdict = (bodyWaist !== undefined || garmentFlatWaist !== undefined)
       ? analyzeWidth({
           category: "dress",
           axisLabel: "Waist",
           bodyChart: bodyWaist,
-          garmentFlat: garmentFlatRow?.waist,
+          garmentFlat: garmentFlatWaist,
           userBody: profile.waistInches,
           garmentStyle: product.garmentStyle,
           title: product.title,
@@ -386,12 +396,15 @@ function fitForSize(
       : undefined;
 
     let hipVerdict: AxisVerdict | undefined;
-    if (bodyHip !== undefined && profile.hipInches !== undefined) {
+    if (
+      (bodyHip !== undefined || garmentFlatHip !== undefined) &&
+      profile.hipInches !== undefined
+    ) {
       hipVerdict = analyzeWidth({
         category: "dress",
         axisLabel: "Hip",
         bodyChart: bodyHip,
-        garmentFlat: garmentFlatRow?.hip,
+        garmentFlat: garmentFlatHip,
         userBody: profile.hipInches,
         garmentStyle: product.garmentStyle,
         title: product.title,
