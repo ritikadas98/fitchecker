@@ -403,39 +403,125 @@ body {
    Retailer-specific PDP styles
    ======================================================================== */
 
-/* === Myntra ============================================================ */
+/* === Myntra (near-clone of real PDP) =================================== */
 
 .myntra-pdp {
-  font-family: "Whitney", "Helvetica Neue", system-ui, sans-serif;
+  font-family: "Whitney", "Helvetica Neue", Arial, sans-serif;
   color: #282c3f;
+  margin: -32px; /* cancel chrome-pdp's padding so the header reaches edge-to-edge */
 }
+
+/* Site header --------------------------------------------------------- */
+.myntra-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  padding: 14px 24px;
+  border-bottom: 1px solid #f0f0f5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+.myntra-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.myntra-nav {
+  display: flex;
+  gap: 22px;
+  flex-shrink: 0;
+}
+.myntra-nav-item {
+  font-size: 13px;
+  font-weight: 700;
+  color: #282c3f;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  position: relative;
+}
+.myntra-nav-item:hover {
+  color: #ff3e6c;
+}
+.myntra-nav-new {
+  position: absolute;
+  top: -10px;
+  right: -18px;
+  background: #ff3e6c;
+  color: #fff;
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  letter-spacing: 0;
+}
+.myntra-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f5f5f6;
+  padding: 10px 14px;
+  border-radius: 4px;
+  min-width: 0;
+}
+.myntra-search-placeholder {
+  font-size: 13px;
+  color: #94969f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.myntra-header-icons {
+  display: flex;
+  gap: 22px;
+  flex-shrink: 0;
+}
+.myntra-header-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #282c3f;
+  cursor: pointer;
+}
+
+/* Breadcrumb ---------------------------------------------------------- */
 .myntra-breadcrumb {
   font-size: 11px;
   color: #93959f;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding-bottom: 16px;
+  padding: 16px 32px;
+  background: #fff;
   border-bottom: 1px solid #f0f0f5;
-  margin-bottom: 20px;
 }
 .myntra-breadcrumb strong {
   color: #282c3f;
-  font-weight: 600;
+  font-weight: 700;
 }
+.myntra-breadcrumb-sep {
+  color: #ff3e6c;
+  font-weight: 700;
+}
+
+/* Product grid -------------------------------------------------------- */
 .myntra-grid {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 28px;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  background: #fff;
+  padding: 24px 32px 32px;
 }
 .myntra-brand {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: #282c3f;
   letter-spacing: -0.3px;
   margin: 0;
 }
 .myntra-title {
-  font-size: 15px;
+  font-size: 16px;
   color: #535766;
   margin: 4px 0 14px;
 }
@@ -446,8 +532,7 @@ body {
   border-radius: 3px;
   padding: 4px 10px;
   font-size: 13px;
-  margin-bottom: 18px;
-  gap: 6px;
+  gap: 8px;
   background: #fff;
 }
 .myntra-rating-badge {
@@ -464,34 +549,65 @@ body {
   color: #535766;
   font-size: 13px;
 }
+
+/* Divider lines between sections (matches real Myntra) */
+.myntra-divider {
+  border: none;
+  border-top: 1px solid #f0f0f5;
+  margin: 20px 0;
+}
+
+/* Price row ----------------------------------------------------------- */
 .myntra-price-row {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 4px;
   flex-wrap: wrap;
 }
 .myntra-price {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: #282c3f;
 }
 .myntra-mrp {
   color: #7e818c;
   text-decoration: line-through;
-  font-size: 14px;
+  font-size: 16px;
 }
 .myntra-discount {
   color: #ff905a;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
 }
 .myntra-tax {
   color: #03a685;
   font-size: 12px;
   font-weight: 700;
+}
+
+/* MORE COLORS --------------------------------------------------------- */
+.myntra-colors-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #282c3f;
+  margin-bottom: 12px;
+}
+.myntra-colors {
+  display: flex;
+  gap: 8px;
   margin-bottom: 24px;
 }
+.myntra-color-thumb {
+  width: 60px;
+  height: 80px;
+  border-radius: 2px;
+  border: 1px solid #f0f0f5;
+  cursor: pointer;
+}
+
+/* Size selector ------------------------------------------------------- */
 .myntra-size-block {
   margin-bottom: 24px;
 }
@@ -502,14 +618,14 @@ body {
   margin-bottom: 14px;
 }
 .myntra-size-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
   color: #282c3f;
 }
 .myntra-size-chart-link {
   color: #ff3e6c;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
   cursor: pointer;
@@ -517,62 +633,159 @@ body {
 .myntra-sizes {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
 }
-.myntra-size {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+.myntra-size-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 68px;
+  height: 60px;
+  padding: 8px 14px;
+  border-radius: 40px;
   border: 1px solid #d4d5d9;
   background: #fff;
-  font-size: 13px;
-  color: #535766;
   cursor: pointer;
   font-family: inherit;
+  position: relative;
   transition: border-color 120ms;
 }
-.myntra-size:hover {
+.myntra-size-pill:hover {
   border-color: #ff3e6c;
-  color: #ff3e6c;
 }
+.myntra-size-letter {
+  font-size: 14px;
+  font-weight: 700;
+  color: #282c3f;
+}
+.myntra-size-price {
+  font-size: 11px;
+  color: #94969f;
+}
+.myntra-size-stock {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff905a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* CTAs ---------------------------------------------------------------- */
 .myntra-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 8px;
+  gap: 12px;
+  margin-top: 24px;
 }
 .myntra-bag {
   background: #ff3f6c;
   color: #fff;
   border: none;
   padding: 14px 24px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
   cursor: pointer;
   flex: 1.4;
   border-radius: 4px;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.myntra-bag:hover {
+  background: #e8345c;
 }
 .myntra-wish {
   background: #fff;
   color: #282c3f;
   border: 1px solid #d4d5d9;
   padding: 14px 16px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
   cursor: pointer;
   flex: 1;
   border-radius: 4px;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.myntra-promise {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid #f0f0f5;
+
+/* Delivery options ---------------------------------------------------- */
+.myntra-delivery-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #282c3f;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.myntra-pincode-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d4d5d9;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+.myntra-pincode {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #282c3f;
+  font-family: inherit;
+  outline: none;
+  padding: 4px 0;
+}
+.myntra-pincode::placeholder {
+  color: #94969f;
+}
+.myntra-pincode-check {
+  background: none;
+  border: none;
+  color: #ff3e6c;
   font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.myntra-delivery-sub {
+  font-size: 12px;
   color: #535766;
+  line-height: 1.5;
+}
+
+/* Promise footer ------------------------------------------------------ */
+.myntra-promise {
+  font-size: 13px;
+  color: #282c3f;
   line-height: 1.8;
+}
+.myntra-promise-item {
+  position: relative;
+  padding-left: 20px;
+  font-weight: 600;
+}
+.myntra-promise-item::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #03a685;
+  font-weight: 700;
 }
 
 /* === AJIO ============================================================== */
