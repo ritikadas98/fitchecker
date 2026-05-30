@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "FitCheck",
-  "version": "0.5.10",
+  "version": "0.6.0",
   "description": "Personalized clothing fit verdicts on Myntra, Ajio, and H&M India.",
 
   "permissions": ["storage", "sidePanel", "activeTab"],

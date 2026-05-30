@@ -21,7 +21,7 @@ import type { ExtractionResult } from "../lib/types";
 // confirm which build is actually running on a given page. If chrome
 // caches an older bundle, this is the canonical answer to "which version
 // am I running?".
-const FITCHECK_VERSION = "5.10";
+const FITCHECK_VERSION = "0.6.0";
 console.log(`[FitCheck] content script v${FITCHECK_VERSION} loaded on ${location.hostname}`);
 
 let lastUrl = "";
