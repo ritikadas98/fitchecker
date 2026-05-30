@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "dev:demo": "vite --config vite.config.demo.ts",
+    "build:demo": "vite --config vite.config.demo.ts build",
+    "preview:demo": "vite --config vite.config.demo.ts preview"
   },
   "dependencies": {
     "react": "^18.3.1",
