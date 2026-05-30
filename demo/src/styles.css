@@ -224,20 +224,22 @@ body {
   display: grid;
   grid-template-columns: 1fr 400px;
   background: #f8f9fa;
-  min-height: 720px;
 }
 
 .chrome-pdp {
   padding: 32px;
-  overflow-y: auto;
+  /* No internal scroll — the whole page scrolls as one unit (the chrome
+     window grows with content, and the document body scrollbar handles
+     overflow). This matches how a real Chrome window behaves: you don't
+     scroll the page area and the side panel separately. */
 }
 
 .chrome-sidepanel {
-  background: #fff;
+  /* Warm beige background so the FitCheck section reads as visually
+     distinct from any retailer's PDP (Myntra pink, AJIO black-on-white,
+     H&M pure white) sitting next to it. */
+  background: #faf3e8;
   border-left: 1px solid #e5e7eb;
-  overflow-y: auto;
-  max-height: 80vh;
-  min-height: 720px;
 }
 
 /* === PDP mock ===================================================== */
