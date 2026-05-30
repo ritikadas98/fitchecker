@@ -579,7 +579,7 @@ function HmPdp({ fixture }: Props) {
       <header className="hm-header">
         <div className="hm-logo">
           <img
-            src={`${import.meta.env.BASE_URL}H%26M-Logo.svg`}
+            src={`${import.meta.env.BASE_URL}hm-logo.svg`}
             alt="H&M"
             className="hm-logo-img"
           />
