@@ -552,46 +552,132 @@ function AjioPdp({ fixture }: Props) {
 
 // === H&M ==============================================================
 
+/**
+ * Near-clone of the real H&M India PDP (white theme). Renders the H&M
+ * site chrome (red logo + LADIES/MEN/KIDS/HOME/BEAUTY nav + utility
+ * icons), product title in caps, "Rs. X,XXX.00" price formatting, COLOUR
+ * label + swatches, horizontal size row + SIZE GUIDE link, black
+ * ADD TO BAG button, "Find in store / CHECK AVAILABILITY" links, and
+ * three collapsible info sections (DESCRIPTION & FIT, MATERIALS,
+ * DELIVERY AND PAYMENT). Promotional top strip preserved.
+ */
 function HmPdp({ fixture }: Props) {
   const { product, price } = fixture;
+  // H&M India displays prices as "Rs. 1,499.00" — convert the fixture's
+  // "₹1,499" to that format.
+  const numericPrice = priceToNumber(price);
+  const hmPrice = `Rs. ${numericPrice.toLocaleString("en-IN")}.00`;
+  const colorName =
+    product.gender === "female" ? "Light blue" : "Black";
+
   return (
     <div className="hm-pdp">
+      {/* Promo strip */}
+      <div className="hm-promo">CO-ORD SETS FOR THE SEASON</div>
+
+      {/* Main header */}
+      <header className="hm-header">
+        <div className="hm-logo">H&amp;M</div>
+        <nav className="hm-nav">
+          <a className="hm-nav-item active">LADIES</a>
+          <a className="hm-nav-item">MEN</a>
+          <a className="hm-nav-item">KIDS</a>
+          <a className="hm-nav-item">HOME</a>
+          <a className="hm-nav-item">BEAUTY</a>
+        </nav>
+        <div className="hm-header-icons">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 22 C 4 16, 20 16, 20 22" />
+          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2">
+            <path d="M12 21 C 4 14, 4 8, 8 6 C 11 5, 12 7, 12 8 C 12 7, 13 5, 16 6 C 20 8, 20 14, 12 21 Z" />
+          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2">
+            <path d="M6 8 L 6 20 L 18 20 L 18 8 Z" />
+            <path d="M9 8 C 9 5, 15 5, 15 8" />
+          </svg>
+        </div>
+      </header>
+
+      {/* Product grid */}
       <div className="hm-grid">
         <div className="hm-images">
           <ImageGrid fixture={fixture} />
         </div>
+
         <div className="hm-info">
-          <div className="hm-brand">H&amp;M</div>
           <h1 className="hm-title">{product.title}</h1>
-          <div className="hm-price">{price}</div>
-          <div className="hm-members">
-            <span className="hm-members-dot" />
-            Members get 25% off — <a href="#">join now</a>
-          </div>
-          <div className="hm-color">
-            Color: <strong>Black</strong>
-          </div>
-          <div className="hm-size-block">
-            <div className="hm-size-header">
-              <span>Select size</span>
-              <a href="#" className="hm-size-find">
-                Find your size
-              </a>
+          <div className="hm-price">{hmPrice}</div>
+          <div className="hm-tax">MRP inclusive of all taxes</div>
+
+          {/* Colour */}
+          <div className="hm-color-block">
+            <div className="hm-color-label">
+              COLOUR: <span className="hm-color-name">{colorName}</span>
             </div>
-            <div className="hm-sizes">
-              {product.sizes.map((s) => (
-                <button key={s} className="hm-size" type="button">
-                  {s}
-                </button>
-              ))}
+            <div className="hm-color-swatches">
+              <div
+                className="hm-swatch active"
+                style={{
+                  background: `linear-gradient(135deg, ${fixture.pdpImageGradient[0]} 0%, ${fixture.pdpImageGradient[1]} 100%)`,
+                }}
+              />
+              <div
+                className="hm-swatch"
+                style={{
+                  background: "linear-gradient(135deg, #fce7d4 0%, #f5d6b5 100%)",
+                }}
+              />
             </div>
           </div>
+
+          {/* Sizes */}
+          <div className="hm-sizes">
+            {product.sizes.map((s) => (
+              <button key={s} className="hm-size" type="button">
+                {s}
+              </button>
+            ))}
+          </div>
+          <div className="hm-size-guide">SIZE GUIDE</div>
+
+          {/* Add to bag */}
           <button className="hm-cta-bag" type="button">
-            Add to bag
+            ADD TO BAG
           </button>
-          <button className="hm-cta-fav" type="button">
-            ♡ Add to favourites
-          </button>
+
+          {/* Store availability */}
+          <div className="hm-store-links">
+            <a className="hm-store-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 21 C 4 14, 4 8, 12 2 C 20 8, 20 14, 12 21 Z" />
+                <circle cx="12" cy="9" r="3" />
+              </svg>
+              Find in store
+            </a>
+            <a className="hm-store-link">CHECK AVAILABILITY</a>
+          </div>
+
+          {/* Accordion */}
+          <div className="hm-accordion">
+            <button className="hm-accordion-row" type="button">
+              <span>DESCRIPTION &amp; FIT</span>
+              <span className="hm-accordion-icon">+</span>
+            </button>
+            <button className="hm-accordion-row" type="button">
+              <span>MATERIALS</span>
+              <span className="hm-accordion-icon">+</span>
+            </button>
+            <button className="hm-accordion-row" type="button">
+              <span>DELIVERY AND PAYMENT</span>
+              <span className="hm-accordion-icon">+</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
