@@ -37,5 +37,8 @@ export const hmBlouse: Fixture = {
   pdpImageGradient: ["#fef2f2", "#fecaca"],
   price: "₹1,499",
   productImageLabel: "Tie-Front Blouse",
-  // imageUrls TBD — see hm.md follow-up snippet.
+  imageUrls: [
+    "https://image.hm.com/assets/hm/0d/6f/0d6fe7c52be2ae185a01aaf3d0c6500053bd0b19.jpg?imwidth=720",
+    "https://image.hm.com/assets/hm/04/9c/049ca788951f8e7588f485d7ea016f285f64796f.jpg?imwidth=720",
+  ],
 };

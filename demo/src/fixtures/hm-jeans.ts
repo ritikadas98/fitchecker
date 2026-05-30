@@ -40,5 +40,8 @@ export const hmJeans: Fixture = {
   pdpImageGradient: ["#1e293b", "#475569"],
   price: "₹1,999",
   productImageLabel: "Straight High Jeans",
-  // imageUrls TBD — see hm.md follow-up snippet.
+  imageUrls: [
+    "https://image.hm.com/assets/hm/aa/75/aa757c2004789a3160ed47b7b8767a0350334d9d.jpg?imwidth=720",
+    "https://image.hm.com/assets/hm/b4/87/b487b2670015dd11ebe6d09ae63d27d2bf887516.jpg?imwidth=720",
+  ],
 };

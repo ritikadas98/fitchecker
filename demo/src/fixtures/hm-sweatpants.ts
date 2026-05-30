@@ -37,5 +37,10 @@ export const hmSweatpants: Fixture = {
   pdpImageGradient: ["#171717", "#404040"],
   price: "₹1,299",
   productImageLabel: "Relaxed Fit Sweatpants",
-  // imageUrls TBD — see hm.md follow-up snippet.
+  imageUrls: [
+    "https://image.hm.com/assets/hm/36/22/36226f7c7886e20af4c1ad3df6e21bcf276e257d.jpg?imwidth=720",
+    "https://image.hm.com/assets/hm/37/1c/371c281e281b1c75f3337984110479240e6c2d21.jpg?imwidth=720",
+    "https://image.hm.com/assets/hm/1f/2a/1f2a844ca920ac8917e9325bb9d2a42ccde920b1.jpg?imwidth=720",
+    "https://image.hm.com/assets/hm/b8/5b/b85be7b1fb12ea62271f18c4ce7271138d47b696.jpg?imwidth=720",
+  ],
 };
