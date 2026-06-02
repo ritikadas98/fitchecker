@@ -4,6 +4,8 @@
 
 **[Live demo](https://fitcheck-demo.netlify.app)** · **[Install v0.6.0](https://github.com/ritikadas98/fitchecker/releases/latest)** · **[About this project](#about-this-project)**
 
+![FitCheck side panel showing a "Perfect fit" verdict on a real H&M India product page](docs/screenshots/hero.png)
+
 ## Why this exists
 
 Apparel return rates in India sit at roughly 25-30%, and sizing is the leading driver. Every product page already shows a size chart, so the chart itself isn't the problem; trusting it is. A "36 inch bust" entry on the chart doesn't tell you whether *your* 34 inch bust will look snug, perfect, or roomy on *this particular cut*.
@@ -45,6 +47,15 @@ The fit math (`src/lib/fit-math.ts`) is the most non-obvious layer. Two paths:
 For tops and dresses the math is *ease-aware* — it knows the difference between body chart numbers ("this size fits a 34 inch bust") and garment-flat numbers ("the garment itself is 38 inches around"). The gap between the two encodes designer intent: 2 inches of ease is slim-fit, 8 inches is oversized. The verdict respects that. An oversized t-shirt on a 36 inch bust isn't "too tight" just because the chart targets a 32 inch body — it's actually loose because the garment itself is 40 inches.
 
 For bottoms the math is body-chart-only since there's typically no ease at the waist (or even negative ease for stretch denim).
+
+## What it looks like
+
+The verdict has three tiers that the silhouette tints accordingly:
+
+| Recommended for you | May work for you | Not recommended |
+|---|---|---|
+| ![Side panel showing a green Recommended-for-you verdict with a green-tinted silhouette](docs/screenshots/state-recommended.png) | ![Side panel showing an amber May-work verdict with an amber-tinted silhouette](docs/screenshots/state-may-work.png) | ![Side panel showing a red Not-recommended verdict with a red-tinted silhouette](docs/screenshots/state-not-recommended.png) |
+| All axes "perfect" or "good" — every dimension lands on target. | At least one axis flagged "okay" — wearable but not the designed cut. | At least one axis "poor" — physical squeeze, hem misalignment, or a cut that fights the body. |
 
 ## Project structure
 
