@@ -40,6 +40,12 @@ const product: ParsedProduct = {
     "5XL": { bust: 50.5, waist: 48, hip: 56 },
   },
   url: "https://www.myntra.com/ethnic-dresses/inddus/inddus-floral-embroidered-fit--flared-maxi-dress/33016407/buy",
+  // Simulates a Myntra order-history URL where the user previously bought
+  // size M. The side panel's purchase-callout will compare this against
+  // whatever the math picks for the user's measurements: green "Matches
+  // your previous order" if the math picks M, amber "Math now recommends
+  // X" otherwise.
+  purchasedSize: "M",
 };
 
 const PREFIX = "https://assets.myntassets.com/h_720,q_85,w_540/v1/assets/images/2025/MARCH/1";

@@ -19,6 +19,8 @@ const product: ParsedProduct = {
     "38": { waist: 38, inseam: 29 },
   },
   url: "https://www.myntra.com/trousers/snitch/snitch-men-trousers/38305373/buy",
+  // Simulated previous purchase — see myntra-inddus-maxi for details.
+  purchasedSize: "32",
 };
 
 const PREFIX = "https://assets.myntassets.com/h_720,q_85,w_540/v1/assets/images/2025/NOVEMBER/28";

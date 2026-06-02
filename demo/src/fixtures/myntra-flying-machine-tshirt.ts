@@ -35,6 +35,8 @@ const product: ParsedProduct = {
     "3XL": { chest: 51 },
   },
   url: "https://www.myntra.com/tshirts/flying+machine/flying-machine-graphic-printed-drop-shoulder-sleeves-pure-cotton-t-shirt/36008882/buy",
+  // Simulated previous purchase — see myntra-inddus-maxi for details.
+  purchasedSize: "L",
 };
 
 const PREFIX = "https://assets.myntassets.com/h_720,q_85,w_540/v1/assets/images/2025/AUGUST/22";
