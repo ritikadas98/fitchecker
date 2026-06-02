@@ -495,7 +495,15 @@ function fitForSize(
   // Bottoms aren't touched: their width axis IS waist.
   let waistVerdict: AxisVerdict | undefined;
   let hipVerdict: AxisVerdict | undefined;
-  if (product.category === "top") {
+  // Anarkalis are flared from the empire waist downward by design — the
+  // waist seam fits at the natural waist but the skirt below is meant to
+  // be many inches wider than the body waist/hip. Running the waist and
+  // hip axes on an anarkali correctly identifies that the garment is
+  // "looser than expected" but the verdict is misleading: that's the
+  // intended silhouette, not a fit problem. Skip these axes for anarkalis
+  // so the verdict only reflects bust + length, which is what the cut
+  // actually constrains.
+  if (product.category === "top" && product.garmentStyle !== "anarkali") {
     const bodyWaist = garment.waist;
     const garmentFlatWaist = garmentFlatRow?.waist;
     if (
