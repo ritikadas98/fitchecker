@@ -119,7 +119,15 @@ function inferDesignedEase(garmentStyle: GarmentStyle, title: string): number {
     case "tunic":        return 4;
     case "kurta_short":
     case "kurta_long":   return 5;
-    case "anarkali":     return 8;
+    // Real anarkali cuts are fitted at the bust and flare from the
+    // empire waist. The original v1 default of 8" treated every
+    // anarkali like an oversized tee, which mis-flagged regular-fit
+    // anarkalis (e.g. MOKOSH, Inddus) as having "way too little ease"
+    // even when the user's body bust matched the garment bust exactly.
+    // 3" matches typical Indian-retail anarkali bust ease; products
+    // that are genuinely oversized still get caught by the title-keyword
+    // override above (\boversized\b → 8").
+    case "anarkali":     return 3;
     case "dress_short":
     case "dress_long":   return 3;
     case "top_regular":
