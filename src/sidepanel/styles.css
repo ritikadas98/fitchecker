@@ -429,6 +429,52 @@ button { font-family: inherit; cursor: pointer; }
   flex: 1 1 auto;
 }
 
+/* === Purchase-history callout ========================================= */
+/* Shown when the URL surfaces a previously purchased size (e.g. Myntra
+   order-history pages). Compares against the recommended verdict for a
+   real-world ground-truth check. */
+
+.purchase-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  line-height: 1.45;
+  border: 1px solid transparent;
+}
+.purchase-callout-match {
+  background: #eaf6df;
+  color: #27500a;
+  border-color: #b8da90;
+}
+.purchase-callout-differ {
+  background: #fef3e2;
+  color: #78350f;
+  border-color: #f5c97a;
+}
+.purchase-callout-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+  font-size: 11px;
+  margin-top: 1px;
+}
+.purchase-callout-text {
+  flex: 1 1 auto;
+}
+.purchase-callout-text strong {
+  font-weight: 700;
+}
+
 /* === Gender mismatch banner — full state, not a strip ================ */
 
 .mismatch-banner {

@@ -63,6 +63,15 @@ export interface ParsedProduct {
    */
   garmentMeasurements?: Record<string, Partial<Record<Dimension, number>>>;
   url: string;
+  /**
+   * Size the user previously purchased for this exact product, when the
+   * extension is loaded on an order-history URL that surfaces it (Myntra's
+   * `/<id>?orderId=...&size=M` order page). The side panel renders a
+   * comparison callout: "Matches your previous order" when this equals the
+   * recommended size, or "You bought X · Recommended Y" when it differs.
+   * Real-world ground-truth check against the fit-math output.
+   */
+  purchasedSize?: string;
 }
 
 export type Dimension = "bust" | "chest" | "waist" | "hip" | "length" | "inseam";

@@ -20,13 +20,24 @@ import { findHydrationJson } from "../utils/extractJson";
 import type { SiteAdapter } from "./types";
 
 const PDP_PATTERN = /\/\d+\/buy\/?$/;
+// Order-history pattern: pathname is just `/<digits>` (the product id) and
+// the query string carries order metadata. Myntra serves the SAME
+// window.__myx.pdpData hydration on these URLs as on the canonical PDP, so
+// the rest of the parser doesn't need to change. The `size=M` query param
+// surfaces which size the user previously bought — captured as
+// purchasedSize on ParsedProduct.
+const ORDER_HISTORY_PATTERN = /^\/\d+$/;
 const MYX_MARKERS = ["window.__myx = ", "window.__myx="];
 
 function matches(url: string): boolean {
   try {
     const u = new URL(url);
     if (u.hostname !== "www.myntra.com") return false;
-    return PDP_PATTERN.test(u.pathname);
+    if (PDP_PATTERN.test(u.pathname)) return true;
+    if (ORDER_HISTORY_PATTERN.test(u.pathname) && u.searchParams.has("orderId")) {
+      return true;
+    }
+    return false;
   } catch {
     return false;
   }
@@ -153,11 +164,24 @@ function parseFromHydrationData(doc: Document, url: string): ExtractionResult {
     };
   }
 
+  // On order-history URLs (Myntra `/<id>?orderId=...&size=M`) the query
+  // string surfaces the size the user previously purchased. Captured so the
+  // side panel can compare it against the recommended size as a real-world
+  // ground-truth check.
+  let purchasedSize: string | undefined;
+  try {
+    const purchased = new URL(url).searchParams.get("size");
+    if (purchased) purchasedSize = purchased;
+  } catch {
+    // URL was malformed somehow; non-fatal — just no purchasedSize comparison.
+  }
+
   const hasGarmentData = Object.keys(garmentMeasurements).length > 0;
   const product: ParsedProduct = {
     id, site: "myntra", brand, title, gender, category, garmentStyle,
     sizes: sizeList, measurements, url,
     ...(hasGarmentData ? { garmentMeasurements } : {}),
+    ...(purchasedSize ? { purchasedSize } : {}),
   };
   return { ok: true, product };
 }

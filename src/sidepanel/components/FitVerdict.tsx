@@ -88,6 +88,35 @@ export function FitVerdict({ verdict, profile }: Props) {
         <span className="rec-label">{rec.label}</span>
       </div>
 
+      {verdict.product.purchasedSize && (
+        <div
+          className={`purchase-callout ${
+            verdict.product.purchasedSize === verdict.recommendedSize
+              ? "purchase-callout-match"
+              : "purchase-callout-differ"
+          }`}
+        >
+          <span className="purchase-callout-icon" aria-hidden>
+            {verdict.product.purchasedSize === verdict.recommendedSize ? "✓" : "!"}
+          </span>
+          <span className="purchase-callout-text">
+            {verdict.product.purchasedSize === verdict.recommendedSize ? (
+              <>
+                <strong>Matches your previous order.</strong> You bought size{" "}
+                {verdict.product.purchasedSize} for this product — the fit math
+                confirms it.
+              </>
+            ) : (
+              <>
+                You previously bought size{" "}
+                <strong>{verdict.product.purchasedSize}</strong>. The fit math
+                now recommends <strong>{verdict.recommendedSize}</strong>.
+              </>
+            )}
+          </span>
+        </div>
+      )}
+
       {/* Silhouette: composite + tint + outline + pins */}
       <div
         className="silhouette-wrap"
