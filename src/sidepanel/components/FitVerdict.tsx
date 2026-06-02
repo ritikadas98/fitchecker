@@ -62,14 +62,20 @@ export function FitVerdict({ verdict, profile }: Props) {
   // Build the analysis rows in display order.
   // Dresses: bust, waist, hip, length. Tops: width, length. Bottoms: width, length.
   const axes: Array<{ label: string; verdict: AxisVerdict }> = [];
-  if (fit.bust)  axes.push({ label: "Bust", verdict: fit.bust });
-  if (fit.waist && verdict.product.category === "dress") axes.push({ label: "Waist", verdict: fit.waist });
-  if (fit.hip)   axes.push({ label: "Hip", verdict: fit.hip });
-  if (fit.width) {
-    const widthLabel = verdict.product.category === "top"
-      ? (verdict.product.gender === "female" ? "Bust" : "Chest")
-      : "Waist";
+  // Order: bust → waist → hip → length. For tops, fit.width carries the
+  // bust verdict and waist/hip are populated when the chart provides them
+  // (kurtas/anarkalis typically do). For dresses, bust/waist/hip are
+  // populated directly and fit.width is absent. Bottoms only carry width
+  // (waist) + length.
+  if (fit.bust) axes.push({ label: "Bust", verdict: fit.bust });
+  if (fit.width && verdict.product.category === "top") {
+    const widthLabel = verdict.product.gender === "female" ? "Bust" : "Chest";
     axes.push({ label: widthLabel, verdict: fit.width });
+  }
+  if (fit.waist) axes.push({ label: "Waist", verdict: fit.waist });
+  if (fit.hip) axes.push({ label: "Hip", verdict: fit.hip });
+  if (fit.width && verdict.product.category === "bottom") {
+    axes.push({ label: "Waist", verdict: fit.width });
   }
   axes.push({ label: "Length", verdict: fit.length });
 

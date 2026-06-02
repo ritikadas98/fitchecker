@@ -475,6 +475,54 @@ function fitForSize(
     title: product.title,
   });
 
+  // For tops, also analyze waist and hip when the chart provides them.
+  // The original v1 math only looked at bust+length for tops, which
+  // misses real fit problems on kurtas and anarkalis — those charts
+  // routinely ship waist (and sometimes hip) measurements, and the
+  // brand often sizes by waist, not by bust. Without the waist axis,
+  // a chart with To Fit Waist == garment Waist (zero designed ease at
+  // waist, classic empire-waist anarkali pattern) would let the math
+  // happily recommend XXL for a 30" waist user — that 10" of waist
+  // slack is invisible. Adding waist+hip here surfaces it.
+  // Bottoms aren't touched: their width axis IS waist.
+  let waistVerdict: AxisVerdict | undefined;
+  let hipVerdict: AxisVerdict | undefined;
+  if (product.category === "top") {
+    const bodyWaist = garment.waist;
+    const garmentFlatWaist = garmentFlatRow?.waist;
+    if (
+      (bodyWaist !== undefined || garmentFlatWaist !== undefined) &&
+      profile.waistInches !== undefined
+    ) {
+      waistVerdict = analyzeWidth({
+        category: "top",
+        axisLabel: "Waist",
+        bodyChart: bodyWaist,
+        garmentFlat: garmentFlatWaist,
+        userBody: profile.waistInches,
+        garmentStyle: product.garmentStyle,
+        title: product.title,
+      });
+    }
+
+    const bodyHip = garment.hip;
+    const garmentFlatHip = garmentFlatRow?.hip;
+    if (
+      (bodyHip !== undefined || garmentFlatHip !== undefined) &&
+      profile.hipInches !== undefined
+    ) {
+      hipVerdict = analyzeWidth({
+        category: "top",
+        axisLabel: "Hip",
+        bodyChart: bodyHip,
+        garmentFlat: garmentFlatHip,
+        userBody: profile.hipInches,
+        garmentStyle: product.garmentStyle,
+        title: product.title,
+      });
+    }
+  }
+
   const garmentLen = product.category === "top" ? garment.length : garment.inseam ?? garment.length;
   let lengthVerdict: AxisVerdict;
   if (garmentLen === undefined) {
@@ -494,10 +542,15 @@ function fitForSize(
     lengthVerdict = analyzeLength(product.garmentStyle, lengthDiff);
   }
 
-  const axes = [widthVerdict, lengthVerdict];
+  const axes = [widthVerdict];
+  if (waistVerdict) axes.push(waistVerdict);
+  if (hipVerdict) axes.push(hipVerdict);
+  axes.push(lengthVerdict);
   return {
     size,
     width: widthVerdict,
+    waist: waistVerdict,
+    hip: hipVerdict,
     length: lengthVerdict,
     recommendation: recommendFromAxes(axes),
     fitName: fitNameFromAxes(axes),
