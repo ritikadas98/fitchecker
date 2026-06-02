@@ -103,14 +103,15 @@ export function FitVerdict({ verdict, profile }: Props) {
             {verdict.product.purchasedSize === verdict.recommendedSize ? (
               <>
                 <strong>Matches your previous order.</strong> You bought size{" "}
-                {verdict.product.purchasedSize} for this product — the fit math
-                confirms it.
+                {verdict.product.purchasedSize}, and the math picks the same
+                size for your current measurements.
               </>
             ) : (
               <>
                 You previously bought size{" "}
-                <strong>{verdict.product.purchasedSize}</strong>. The fit math
-                now recommends <strong>{verdict.recommendedSize}</strong>.
+                <strong>{verdict.product.purchasedSize}</strong>. The math now
+                recommends <strong>{verdict.recommendedSize}</strong> based on
+                your current measurements.
               </>
             )}
           </span>
