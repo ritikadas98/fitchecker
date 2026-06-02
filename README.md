@@ -1,25 +1,50 @@
 # FitCheck
 
-Chrome extension that translates clothing size charts into personalized fit verdicts at the point of purchase. v1 supports Myntra, Ajio, and H&M India.
+> Personalized clothing fit verdicts at the point of purchase, for Indian fashion shoppers on Myntra, AJIO, and H&M India.
 
-The user enters their measurements once. On a supported product page, the side panel shows a tinted silhouette per size with per-axis pins (bust, waist, hip, length where applicable) calling out which dimensions will be snug, perfect, or loose — and a single recommended size at the top.
+**[Live demo](https://fitcheck-demo.netlify.app)** · **[Install v0.6.0](https://github.com/ritikadas98/fitchecker/releases/latest)** · **[About this project](#about-this-project)**
 
-## Install for local development
+## Why this exists
 
-```bash
-npm install
-npm run build
-```
+Apparel return rates in India sit at roughly 25-30%, and sizing is the leading driver. Every product page already shows a size chart, so the chart itself isn't the problem; trusting it is. A "36 inch bust" entry on the chart doesn't tell you whether *your* 34 inch bust will look snug, perfect, or roomy on *this particular cut*.
 
-Then in Chrome:
+FitCheck doesn't replace the chart. It translates it into a verdict the shopper can act on, with a per-axis breakdown of *why*. The user enters their measurements once. On any supported product page, the side panel renders a recommended size with a tinted silhouette showing which axes (bust, waist, hip, length) will be snug, perfect, or loose.
 
-1. Open `chrome://extensions`
-2. Toggle **Developer mode** on (top right)
-3. Click **Load unpacked** → select the `dist/` folder
-4. Pin the extension to the toolbar
-5. Open a product page on Myntra, Ajio, or www2.hm.com (English India locale)
+## Try it
 
-After any source change, run `npm run build` again and click the refresh icon on the FitCheck card in `chrome://extensions`.
+Two paths to evaluate the product, depending on how much friction you're willing to accept.
+
+### 1. Interactive demo (no install, ~30 seconds)
+
+Open the [live demo](https://fitcheck-demo.netlify.app) and click through ten real product fixtures across the three retailers. Enter your measurements once; the side panel runs the real fit math against each product's actual size chart. Pure browser, nothing to install.
+
+### 2. Chrome extension on real product pages (~2 minutes)
+
+Use the real extension on actual Myntra / AJIO / H&M India product pages:
+
+1. Download `fitcheck-0.6.0.zip` from the [latest release](https://github.com/ritikadas98/fitchecker/releases/latest).
+2. Unzip the archive anywhere on your machine.
+3. Open `chrome://extensions` in Chrome.
+4. Toggle **Developer mode** ON (top right).
+5. Click **Load unpacked** and select the unzipped folder.
+6. Pin FitCheck to your toolbar via the puzzle-piece menu.
+7. Open any product on [Myntra](https://www.myntra.com), [AJIO](https://www.ajio.com), or [H&M India](https://www2.hm.com/en_in) and click the FitCheck icon.
+
+## How it works
+
+Three components, each scoped to one job:
+
+- **Content script + per-retailer adapters** (`src/content/`) read the size chart and product info from the rendered DOM. Each retailer ships data differently — Myntra exposes a hydration store, AJIO uses a Redux preload, H&M India relies on a static chart that ships as Next.js hydration metadata. The adapters normalize all of that into one `ParsedProduct` shape.
+- **Background service worker** (`src/background/`) receives the parsed product, computes the verdict against the stored user profile, caches state per tab.
+- **Side panel React app** (`src/sidepanel/`) renders the verdict: recommended size, tinted silhouette, per-axis pins (bust/waist/hip/length where applicable), and a size-comparison row.
+
+The fit math (`src/lib/fit-math.ts`) is the most non-obvious layer. Two paths:
+- **Tops & bottoms**: two-axis (width + length).
+- **Dresses**: four-axis (bust + waist + hip + length).
+
+For tops and dresses the math is *ease-aware* — it knows the difference between body chart numbers ("this size fits a 34 inch bust") and garment-flat numbers ("the garment itself is 38 inches around"). The gap between the two encodes designer intent: 2 inches of ease is slim-fit, 8 inches is oversized. The verdict respects that. An oversized t-shirt on a 36 inch bust isn't "too tight" just because the chart targets a 32 inch body — it's actually loose because the garment itself is 40 inches.
+
+For bottoms the math is body-chart-only since there's typically no ease at the waist (or even negative ease for stretch denim).
 
 ## Project structure
 
@@ -32,12 +57,12 @@ src/
 │   ├── adapters/
 │   │   ├── types.ts      # SiteAdapter interface
 │   │   ├── index.ts      # Adapter registry
-│   │   ├── myntra.ts     # ★ Implemented — hydration-store extraction
-│   │   ├── ajio.ts       # ★ Implemented — __PRELOADED_STATE__ extraction
-│   │   └── hm.ts         # ★ Implemented — __NEXT_DATA__ + static size chart
+│   │   ├── myntra.ts     # Hydration-store extraction
+│   │   ├── ajio.ts       # __PRELOADED_STATE__ extraction
+│   │   └── hm.ts         # __NEXT_DATA__ + static size chart
 │   └── utils/
 │       ├── observer.ts   # URL change observer for SPAs
-│       └── extractJson.ts # Brace-counting JSON extractor (Myntra + Ajio)
+│       └── extractJson.ts # Brace-counting JSON extractor (Myntra + AJIO)
 ├── lib/
 │   ├── types.ts          # Shared types across processes
 │   ├── storage.ts        # chrome.storage.local wrapper
@@ -59,7 +84,29 @@ src/
     │   ├── TintedComposite.tsx   # Runtime garment tinting
     │   └── Fallback.tsx
     └── styles.css
+
+demo/                     # Interactive standalone demo (Netlify-deployed)
+├── index.html
+├── main.tsx
+└── src/
+    ├── DemoApp.tsx       # Chrome window mock + tab switcher
+    ├── ChromeWindow.tsx
+    ├── PdpMock.tsx       # Per-retailer PDP near-clones
+    ├── shims/chrome.ts   # Shims chrome.* APIs onto globalThis
+    ├── fixtures/         # 10 real product fixtures
+    └── styles.css
 ```
+
+## Build from source
+
+```bash
+npm install
+npm run build              # extension build → dist/
+npm run build:demo         # standalone demo build → demo-dist/
+npm run dev:demo           # local dev server for the demo on port 5174
+```
+
+After `npm run build`, follow steps 3–7 of the **install** section above, pointing **Load unpacked** at the `dist/` folder.
 
 ## Adding a new retailer
 
@@ -69,15 +116,15 @@ Three steps, in order:
 2. Register it in `src/content/adapters/index.ts`.
 3. Add the host to `manifest.json` under both `host_permissions` and `content_scripts.matches`.
 
-No other files need to change. The fit math, silhouettes, tinting, and side panel all consume `ParsedProduct` shape — once your adapter emits a valid one, every downstream piece works automatically.
+No other files need to change. The fit math, silhouettes, tinting, and side panel all consume the `ParsedProduct` shape — once your adapter emits a valid one, every downstream piece works automatically.
 
-## How each adapter extracts data (v1)
+## How each adapter extracts data
 
 The three adapters illustrate three different data architectures, and that variety is part of the v1 narrative:
 
 - **Myntra** — global hydration via `window.__myx = {...}` script tag. Brace-counted JSON extraction. Has its own per-product size chart with measurements in inches. Cleanest data of the three.
-- **Ajio** — Redux preload via `window.__PRELOADED_STATE__ = {...}`. Same brace-counting technique (shared util). Per-product size chart at `state.product.sizeData.sizechart[0].brickBrandSizes[]`, measurements in inches as strings (often with empty values for dims a brick category doesn't carry).
-- **H&M India** — Next.js hydration via `<script id="__NEXT_DATA__" type="application/json">{...}</script>`. Identity and size labels come from the page; per-size body measurements do NOT — the size guide modal lazy-loads from api.hm.com after render, which a content-script-only architecture cannot fetch. The adapter falls back to H&M's standardized published size chart (shipped as static data in `lib/hm-size-chart.ts`) for bust/waist/hip, and pulls per-product garment length from `productAttributes.measurement` when available. This is less fidelity-preserving than per-product charts but accurate enough since H&M applies their chart uniformly.
+- **AJIO** — Redux preload via `window.__PRELOADED_STATE__ = {...}`. Same brace-counting technique (shared util). Per-product size chart at `state.product.sizeData.sizechart[0].brickBrandSizes[]`, measurements in inches as strings (often with empty values for dims a brick category doesn't carry).
+- **H&M India** — Next.js hydration via `<script id="__NEXT_DATA__" type="application/json">{...}</script>`. Identity and size labels come from the page; per-size body measurements do NOT — the size guide modal lazy-loads from `api.hm.com` after render, which a content-script-only architecture cannot fetch. The adapter falls back to H&M's standardized published size chart (shipped as static data in `lib/hm-size-chart.ts`) for bust/waist/hip, and pulls per-product garment length from `productAttributes.measurement` when available.
 
 ## Why Westside isn't in v1
 
@@ -102,9 +149,9 @@ This is a documented v1 scope decision, not an oversight.
 
 When an adapter selector breaks (a retailer ships a redesign, etc.):
 
-1. Open a PDP on the affected site
-2. Open the side panel — it shows the fallback state with a brief message
-3. Open `chrome://extensions`, find FitCheck, click **Service worker** to open its DevTools
+1. Open a PDP on the affected site.
+2. Open the side panel — it shows the fallback state with a brief message.
+3. Open `chrome://extensions`, find FitCheck, click **Service worker** to open its DevTools.
 4. The console shows `[FitCheck]` logs including the `reason` and `detail` strings from the failed `ExtractionResult`. Each adapter's failure modes are documented at the top of its `.ts` file with their exact strings — that's how you map an error back to the broken extraction path.
 5. Update the selector / path in the adapter file. Run `npm run build`, refresh the extension card.
 
@@ -112,11 +159,11 @@ When an adapter selector breaks (a retailer ships a redesign, etc.):
 
 Intentionally scoped out:
 
-- Image-based size charts (OCR) — see Westside section above
-- `chrome.storage.sync` (cross-device profile)
-- External analytics
-- A debug page for the event log
-- Mobile support
+- Image-based size charts (OCR) — see Westside section above.
+- `chrome.storage.sync` (cross-device profile).
+- External analytics.
+- A debug page for the event log.
+- Mobile support.
 
 ## Roadmap (post-v1)
 
@@ -127,3 +174,13 @@ In priority order:
 3. **A debug page** to visualize the analytics events (`src/lib/analytics.ts` `Event` type).
 4. **First verdict-tone experiment** — A/B between two phrasings of "may work" verdicts.
 5. **Background-script SPA re-extraction** — currently the side panel asks the user to refresh after profile edits or product changes; a smarter content-script observer could re-extract automatically.
+
+## About this project
+
+I built FitCheck as a portfolio piece during my transition from SAP consulting toward consumer product management. The work is end-to-end on purpose: a real extension users can install, three retailer adapters built against live page data, a fit-math layer calibrated against real Indian-retail sizing conventions, and a side-panel UI shipped with the same care as the underlying logic.
+
+The most representative PM artifacts in this repo are the [Westside scope-out](#why-westside-isnt-in-v1) and the [post-v1 roadmap](#roadmap-post-v1) — together they show how I think about saying no, sequencing work against impact, and writing the *why* down so the next person can pick it up.
+
+If you're hiring for APM or consumer PM roles, the live demo is the fastest way to see what I built and how it thinks. The repo is the fastest way to see how I built it.
+
+— Ritika Das · [ritikadas98@gmail.com](mailto:ritikadas98@gmail.com)
