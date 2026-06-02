@@ -12,6 +12,18 @@ Apparel return rates in India sit at roughly 25-30%, and sizing is the leading d
 
 FitCheck doesn't replace the chart. It translates it into a verdict the shopper can act on, with a per-axis breakdown of *why*. The user enters their measurements once. On any supported product page, the side panel renders a recommended size with a tinted silhouette showing which axes (bust, waist, hip, length) will be snug, perfect, or loose.
 
+## Real-world validation
+
+The fit math has been tested against my own purchase history. A representative case from AJIO:
+
+> I ordered size 30 jeans. They arrived too loose. I shipped them back and exchanged for size 28, which fit. The chart label and my waist measurement (both "30") seemed to agree, but the *actual* body-chart waist value for "size 28" on that Levi's cut is 30 inches — the size labels were misleading. With FitCheck running on the same product page, the extension recommends **size 28** directly. Same product, same body, would have skipped the exchange shipment.
+
+| FitCheck recommendation on the live PDP | My actual order — exchanged 30 → 28 |
+|---|---|
+| ![FitCheck side panel showing size 28 Perfect Fit on the AJIO Levi's Women Straight Fit High Rise Jeans page, with "Waist on target" and a green silhouette](docs/screenshots/state-recommended.png) | ![AJIO order history showing the same Levi's jeans were originally ordered in size 30 and exchanged for size 28, marked "Exchange Order" with "Delivered" status](docs/screenshots/real-world-order.png) |
+
+On **Myntra** order-history URLs (which surface a `size=` query param from past purchases), the side panel goes one step further and compares the recommendation against your past purchase explicitly: a green "Matches your previous order" callout when the math picks the size you actually wore, or an amber "You bought X · Math now recommends Y" when your body has shifted since. See the "Validated against past purchase" row below for examples.
+
 ## Try it
 
 Two paths to evaluate the product, depending on how much friction you're willing to accept.
@@ -56,6 +68,15 @@ The verdict has three tiers that the silhouette tints accordingly:
 |---|---|---|
 | ![Side panel showing a green Recommended-for-you verdict with a green-tinted silhouette](docs/screenshots/state-recommended.png) | ![Side panel showing an amber May-work verdict with an amber-tinted silhouette](docs/screenshots/state-may-work.png) | ![Side panel showing a red Not-recommended verdict with a red-tinted silhouette](docs/screenshots/state-not-recommended.png) |
 | All axes "perfect" or "good" — every dimension lands on target. | At least one axis flagged "okay" — wearable but not the designed cut. | At least one axis "poor" — physical squeeze, hem misalignment, or a cut that fights the body. |
+
+### Validated against past purchase
+
+On Myntra order-history URLs the side panel compares the math against the size you actually bought, in two states:
+
+| Math matches your past purchase | Body changed since the past purchase |
+|---|---|
+| ![Side panel with a green "Matches your previous order" callout above the recommendation chip on a Myntra kurti page](docs/screenshots/state-validated-match.png) | ![Side panel with an amber callout reading "You previously bought size M. The math now recommends L" on a Myntra kurta page](docs/screenshots/state-validated-differ.png) |
+| Green callout: you bought size M, the math now picks M too. Direct ground-truth confirmation that the recommendation matches a size you've actually worn. | Amber callout: you bought M previously, the math now recommends L — your body has shifted, and the math reflects it honestly rather than rubber-stamping the past purchase. |
 
 ## Project structure
 
