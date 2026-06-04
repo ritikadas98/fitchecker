@@ -60,6 +60,11 @@ For tops and dresses the math is *ease-aware* — it knows the difference betwee
 
 For bottoms the math is body-chart-only since there's typically no ease at the waist (or even negative ease for stretch denim).
 
+Two touchpoints sit on top of the verdict view:
+
+- **Calibrate from a known-good item.** Most shoppers don't know their measurements in inches but do know "size M from AJIO fits me well." The side panel exposes a "This fits me" action that reads the body chart for the picked size and writes it into the profile, merging instead of overwriting: a top fills upper-body, a bottom fills waist/hip, calibrating from more than one item over time fills gaps. Height stays a separate input since no garment chart carries it. Only Myntra / AJIO / H&M PDPs can calibrate (we need the retailer's published body chart); the UI says so.
+- **Fit-outcome feedback (local).** A "Did size X fit?" control records a typed `fit_outcome` event (fit / too tight / too loose) to the local ring buffer in `lib/analytics.ts`. The override event already captures "disagreed at purchase"; this captures the cleaner accuracy signal — did the verdict survive contact with reality? Stays on-device; readable via `readEvents()`.
+
 ## What it looks like
 
 The verdict has three tiers that the silhouette tints accordingly:
@@ -111,6 +116,7 @@ src/
     ├── App.tsx           # Three-state router
     ├── components/
     │   ├── ProfileSetup.tsx
+    │   ├── CalibrateProfile.tsx  # Seed the profile from a known-good item
     │   ├── FitVerdict.tsx
     │   ├── FitIndicators.tsx     # Pins + tags overlaid on silhouette
     │   ├── TintedComposite.tsx   # Runtime garment tinting
@@ -127,6 +133,10 @@ demo/                     # Interactive standalone demo (Netlify-deployed)
     ├── shims/chrome.ts   # Shims chrome.* APIs onto globalThis
     ├── fixtures/         # 10 real product fixtures
     └── styles.css
+
+eval/                     # Golden-set regression suite (npm run eval)
+├── expectations.ts       # (fixture, profile, expected verdict) rows
+└── run.test.ts           # vitest runner; imports the real computeFit
 ```
 
 ## Build from source
@@ -136,9 +146,14 @@ npm install
 npm run build              # extension build → dist/
 npm run build:demo         # standalone demo build → demo-dist/
 npm run dev:demo           # local dev server for the demo on port 5174
+npm run eval               # verdict regression suite (vitest)
 ```
 
 After `npm run build`, follow steps 3–7 of the **install** section above, pointing **Load unpacked** at the `dist/` folder.
+
+### Accuracy / testing
+
+`npm run eval` runs a golden-set regression suite under `eval/` that imports the real `computeFit` from `src/lib/fit-math.ts` and runs it against the 10 demo fixtures with locked-in expected verdicts (recommended size + tier). Flipping any expected value here fails loudly the next time someone touches the math or an adapter. Two cases lock in behaviour the README highlights: the AJIO Levi's "recommends size 28 for a 30-inch-waist body" real-world case, and the Flying Machine drop-shoulder tee "reads loose, not tight" ease-aware case. A coverage check ensures every fixture has at least one expectation.
 
 ## Adding a new retailer
 
