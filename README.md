@@ -72,7 +72,7 @@ The verdict has three tiers that the silhouette tints accordingly:
 | Recommended for you | May work for you | Not recommended |
 |---|---|---|
 | ![Side panel showing a green Recommended-for-you verdict with a green-tinted silhouette](docs/screenshots/state-recommended.png) | ![Side panel showing an amber May-work verdict with an amber-tinted silhouette](docs/screenshots/state-may-work.png) | ![Side panel showing a red Not-recommended verdict with a red-tinted silhouette](docs/screenshots/state-not-recommended.png) |
-| All axes "perfect" or "good" — every dimension lands on target. | At least one axis flagged "okay" — wearable but not the designed cut. | At least one axis "poor" — physical squeeze, hem misalignment, or a cut that fights the body. |
+| All axes "perfect" or "good" — every dimension lands on target. | A minority of axes flagged "poor", or any axis flagged "okay". The bad axis is still named in the size-verdict headline and shows a red dot in the per-axis breakdown — the chip just doesn't blare red when most axes are fine. | A *strict majority* of axes flagged "poor" — multiple dimensions fight the body at once, not just one. |
 
 ### Validated against past purchase
 
@@ -230,6 +230,8 @@ FitCheck is a consumer product with a B2B endgame. The framing I build against:
 - **Counter-metric: override rate.** How often users pick a size other than the one recommended. The cleanest proxy for trust, and the metric most fit tools forget to instrument.
 - **Activation: profile completion within 24h.** The single measurement entry is the make-or-break step; same-session vs 24h-plus completion is my hypothesis for the strongest predictor of week-4 retention.
 
+Why a Chrome extension rather than, say, a Myntra-only feature: it's the only way to test the fit-verdict idea across multiple real retailers without being one of them. The proof-of-concept user is the desktop, considered-purchase shopper; the retailer-side SDK on every PDP is the everywhere endgame.
+
 The consumer extension validates the fit-verdict hypothesis on the easiest surface, but ~60% of Indian fashion traffic is mobile, where an extension can't reach. The endgame isn't a bigger extension. It's licensing the fit engine as a retailer-side SDK that runs natively on the product page. The ladder: instrument at 1k MAU → first verdict-tone A/B at 10k → a returns-measurement pilot with one retailer (AJIO first, cleanest data) at 50k → license the engine as an SDK at 100k, with the extension as the proof point, not the product.
 
 ## About this project
@@ -237,6 +239,8 @@ The consumer extension validates the fit-verdict hypothesis on the easiest surfa
 I built FitCheck as a portfolio piece during my transition from SAP consulting toward consumer product management. The work is end-to-end on purpose: a real extension users can install, three retailer adapters built against live page data, a fit-math layer calibrated against real Indian-retail sizing conventions, and a side-panel UI shipped with the same care as the underlying logic.
 
 The most representative PM artifacts in this repo are the [Westside scope-out](#why-westside-isnt-in-v1), the [real-world validation](#real-world-validation) (ground-truth against my own returns), the [PM view](#the-pm-view), and the [post-v1 roadmap](#roadmap-post-v1). Together they show how I think about saying no, validating against reality, framing metrics and the business case, and writing the *why* down.
+
+Every product call and its reasoning is logged in [docs/PM_DECISIONS.md](docs/PM_DECISIONS.md) — positioning, scope-outs, math choices, surface decisions, and the post-ship corrections.
 
 If you're hiring for APM or consumer PM roles, the live demo is the fastest way to see what I built and how it thinks. The repo is the fastest way to see how I built it.
 
