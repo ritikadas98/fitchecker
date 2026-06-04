@@ -475,6 +475,80 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 700;
 }
 
+/* === Calibrate-from-known-good (FitVerdict footer) ==================== */
+
+.calibrate-cta {
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 12px;
+  background: #f9f9f7;
+  color: #1a1a1a;
+  border: 1px dashed #cdd0c6;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+.calibrate-cta:hover {
+  background: #f1f1ed;
+  border-color: #aab09c;
+}
+
+.calibrate-form {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9f9f7;
+  border: 1px solid #e3e3dc;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.calibrate-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.calibrate-help {
+  margin: 0;
+  font-size: 12px;
+  color: #5f5e5a;
+  line-height: 1.45;
+}
+.calibrate-scope {
+  margin: 0;
+  font-size: 11px;
+  color: #7a7a72;
+  line-height: 1.4;
+  font-style: italic;
+}
+.calibrate-empty {
+  margin: 0;
+  font-size: 12px;
+  color: #78350f;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 4px;
+  padding: 8px 10px;
+  line-height: 1.4;
+}
+.calibrate-select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+}
+.calibrate-select:focus {
+  border-color: #1e3a5f;
+}
+
 /* === Gender mismatch banner — full state, not a strip ================ */
 
 .mismatch-banner {

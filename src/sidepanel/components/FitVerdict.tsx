@@ -10,6 +10,7 @@ import type {
 } from "../../lib/types";
 import { TintedComposite } from "./TintedComposite";
 import { FitIndicators } from "./FitIndicators";
+import { CalibrateProfile } from "./CalibrateProfile";
 
 interface Props {
   verdict: FitVerdictType;
@@ -30,13 +31,15 @@ const SILHOUETTE_H = 330;
 
 export function FitVerdict({ verdict, profile }: Props) {
   const [selectedSize, setSelectedSize] = useState<string>(verdict.recommendedSize);
+  const [calibrating, setCalibrating] = useState(false);
 
   // When the active product changes (user navigated to a new PDP or
-  // switched tabs), reset the selected size to the new recommendation.
-  // Doing this in an effect keeps render pure and avoids the
-  // setState-during-render warning under StrictMode.
+  // switched tabs), reset the selected size to the new recommendation
+  // and close any open calibration panel (which targeted the previous
+  // product).
   useEffect(() => {
     setSelectedSize(verdict.recommendedSize);
+    setCalibrating(false);
   }, [verdict.product.id, verdict.recommendedSize]);
 
   const fit = verdict.sizes.find((s) => s.size === selectedSize) ?? verdict.sizes[0];
@@ -177,6 +180,28 @@ export function FitVerdict({ verdict, profile }: Props) {
           />
         ))}
       </div>
+
+      {/* Calibrate-from-known-good entry point. When the user has a product
+          that they know fits, this seeds the profile from the retailer's
+          published body chart for the size that fit, instead of asking
+          for raw bust/waist/hip numbers most shoppers don't know. */}
+      {calibrating ? (
+        <CalibrateProfile
+          product={verdict.product}
+          initialSize={selectedSize}
+          currentProfile={profile}
+          onCancel={() => setCalibrating(false)}
+          onSaved={() => setCalibrating(false)}
+        />
+      ) : (
+        <button
+          className="calibrate-cta"
+          type="button"
+          onClick={() => setCalibrating(true)}
+        >
+          This fits me — set up my profile from it
+        </button>
+      )}
     </div>
   );
 }
