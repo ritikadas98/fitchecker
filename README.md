@@ -207,11 +207,21 @@ In priority order:
 4. **First verdict-tone experiment** — A/B between two phrasings of "may work" verdicts.
 5. **Background-script SPA re-extraction** — currently the side panel asks the user to refresh after profile edits or product changes; a smarter content-script observer could re-extract automatically.
 
+## The PM view
+
+FitCheck is a consumer product with a B2B endgame. The framing I build against:
+
+- **North Star: verdict-to-purchase conversion.** Of shoppers who see a verdict, how many buy the recommended size. It's the metric a retailer would pay for, because it ties directly to fewer size-driven returns.
+- **Counter-metric: override rate.** How often users pick a size other than the one recommended. The cleanest proxy for trust, and the metric most fit tools forget to instrument.
+- **Activation: profile completion within 24h.** The single measurement entry is the make-or-break step; same-session vs 24h-plus completion is my hypothesis for the strongest predictor of week-4 retention.
+
+The consumer extension validates the fit-verdict hypothesis on the easiest surface, but ~60% of Indian fashion traffic is mobile, where an extension can't reach. The endgame isn't a bigger extension. It's licensing the fit engine as a retailer-side SDK that runs natively on the product page. The ladder: instrument at 1k MAU → first verdict-tone A/B at 10k → a returns-measurement pilot with one retailer (AJIO first, cleanest data) at 50k → license the engine as an SDK at 100k, with the extension as the proof point, not the product.
+
 ## About this project
 
 I built FitCheck as a portfolio piece during my transition from SAP consulting toward consumer product management. The work is end-to-end on purpose: a real extension users can install, three retailer adapters built against live page data, a fit-math layer calibrated against real Indian-retail sizing conventions, and a side-panel UI shipped with the same care as the underlying logic.
 
-The most representative PM artifacts in this repo are the [Westside scope-out](#why-westside-isnt-in-v1) and the [post-v1 roadmap](#roadmap-post-v1) — together they show how I think about saying no, sequencing work against impact, and writing the *why* down so the next person can pick it up.
+The most representative PM artifacts in this repo are the [Westside scope-out](#why-westside-isnt-in-v1), the [real-world validation](#real-world-validation) (ground-truth against my own returns), the [PM view](#the-pm-view), and the [post-v1 roadmap](#roadmap-post-v1). Together they show how I think about saying no, validating against reality, framing metrics and the business case, and writing the *why* down.
 
 If you're hiring for APM or consumer PM roles, the live demo is the fastest way to see what I built and how it thinks. The repo is the fastest way to see how I built it.
 
