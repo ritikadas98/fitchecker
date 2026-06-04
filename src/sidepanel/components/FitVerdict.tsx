@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { send } from "../../lib/messages";
+import { record } from "../../lib/analytics";
 import { buildSilhouette } from "../../lib/silhouette";
 import type {
   AxisVerdict,
@@ -11,6 +12,8 @@ import type {
 import { TintedComposite } from "./TintedComposite";
 import { FitIndicators } from "./FitIndicators";
 import { CalibrateProfile } from "./CalibrateProfile";
+
+type FitOutcome = "fit" | "too_tight" | "too_loose";
 
 interface Props {
   verdict: FitVerdictType;
@@ -32,15 +35,34 @@ const SILHOUETTE_H = 330;
 export function FitVerdict({ verdict, profile }: Props) {
   const [selectedSize, setSelectedSize] = useState<string>(verdict.recommendedSize);
   const [calibrating, setCalibrating] = useState(false);
+  // Locally tracked so we can render the picked button as selected after the
+  // user reports back. Each click also persists a fit_outcome event to the
+  // local ring buffer via record(); the in-memory state is only for UI.
+  const [outcomeFor, setOutcomeFor] = useState<{
+    size: string;
+    outcome: FitOutcome;
+  } | null>(null);
 
   // When the active product changes (user navigated to a new PDP or
-  // switched tabs), reset the selected size to the new recommendation
-  // and close any open calibration panel (which targeted the previous
-  // product).
+  // switched tabs), reset the selected size to the new recommendation,
+  // close any open calibration panel, and clear any prior outcome
+  // selection — all of those targeted the previous product.
   useEffect(() => {
     setSelectedSize(verdict.recommendedSize);
     setCalibrating(false);
+    setOutcomeFor(null);
   }, [verdict.product.id, verdict.recommendedSize]);
+
+  function handleOutcome(outcome: FitOutcome): void {
+    setOutcomeFor({ size: selectedSize, outcome });
+    void record({
+      kind: "fit_outcome",
+      site: verdict.product.site,
+      size: selectedSize,
+      outcome,
+      recommendedSize: verdict.recommendedSize,
+    });
+  }
 
   const fit = verdict.sizes.find((s) => s.size === selectedSize) ?? verdict.sizes[0];
   const rec = RECOMMENDATION_META[fit.recommendation];
@@ -179,6 +201,40 @@ export function FitVerdict({ verdict, profile }: Props) {
             onPick={handleSizePick}
           />
         ))}
+      </div>
+
+      {/* Fit-outcome feedback. Local-only: clicking writes a typed
+          fit_outcome event to the analytics ring buffer. The override
+          event already tells us "user disagreed at purchase time"; this
+          tells us "did the verdict survive contact with reality?" — the
+          accuracy signal a real-world fit tool needs. */}
+      <div className="fit-outcome">
+        <p className="fit-outcome-label">
+          Did size <strong>{selectedSize}</strong> fit?
+        </p>
+        <div className="fit-outcome-row">
+          {([
+            ["fit", "Fit"],
+            ["too_tight", "Too tight"],
+            ["too_loose", "Too loose"],
+          ] as Array<[FitOutcome, string]>).map(([value, label]) => {
+            const isSelected =
+              outcomeFor?.size === selectedSize && outcomeFor.outcome === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                className={`fit-outcome-btn${isSelected ? " selected" : ""}`}
+                onClick={() => handleOutcome(value)}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+        {outcomeFor?.size === selectedSize && (
+          <p className="fit-outcome-thanks">Saved locally — thanks.</p>
+        )}
       </div>
 
       {/* Calibrate-from-known-good entry point. When the user has a product

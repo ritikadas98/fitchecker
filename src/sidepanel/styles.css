@@ -475,6 +475,53 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 700;
 }
 
+/* === Fit-outcome feedback (post-purchase accuracy signal) ============= */
+
+.fit-outcome {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #ececec;
+}
+.fit-outcome-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #6b6b6b;
+}
+.fit-outcome-label strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.fit-outcome-row {
+  display: flex;
+  gap: 6px;
+}
+.fit-outcome-btn {
+  flex: 1;
+  padding: 8px 6px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  background: #fff;
+  color: #444;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 120ms, background 120ms;
+}
+.fit-outcome-btn:hover {
+  border-color: #aab09c;
+  background: #f9f9f7;
+}
+.fit-outcome-btn.selected {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+.fit-outcome-thanks {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: #639922;
+}
+
 /* === Calibrate-from-known-good (FitVerdict footer) ==================== */
 
 .calibrate-cta {
