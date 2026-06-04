@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "dev:demo": "vite --config vite.config.demo.ts",
     "build:demo": "vite --config vite.config.demo.ts build",
-    "preview:demo": "vite --config vite.config.demo.ts preview"
+    "preview:demo": "vite --config vite.config.demo.ts preview",
+    "eval": "vitest run"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -24,6 +25,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "typescript": "^5.4.5",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vitest": "^4.1.8"
   }
 }
