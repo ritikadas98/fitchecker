@@ -9,8 +9,10 @@
  *   - Dresses: four-axis (bust + waist + hip + length).
  *
  * Width logic is shared. Length logic is style-aware via BASELINE_BY_STYLE.
- * Recommendation tier: "perfect"/"good" on all axes → recommended; any axis
- * "poor" → not_recommended; otherwise may_work.
+ * Recommendation tier: all axes "perfect"/"good" → recommended; a strict
+ * majority of axes flagged "poor" → not_recommended; everything else
+ * (mixed, or only a minority poor) → may_work, with the worst axis still
+ * visible in the verdict headline and per-axis breakdown.
  */
 
 import type {
@@ -345,8 +347,19 @@ function recommendFromAxes(axes: AxisVerdict[]): Recommendation {
   // axes are unknown, fall back to may_work (the user has no signal).
   const known = axes.filter((a) => a.status !== "unknown");
   if (known.length === 0) return "may_work";
-  if (known.some((a) => a.status === "poor")) return "not_recommended";
-  if (known.every((a) => a.status === "perfect" || a.status === "good")) return "recommended";
+  // All axes good/perfect — clean recommend.
+  if (known.every((a) => a.status === "perfect" || a.status === "good")) {
+    return "recommended";
+  }
+  // Strict majority of axes flagged poor: the size genuinely doesn't fit.
+  // Earlier versions tripped to not_recommended on ANY single poor axis,
+  // which over-blared red on cases like "bust good + waist good + length
+  // runs long" — 2 of 3 axes were fine and the user was being told to walk
+  // away. The fitName picks the worst axis as its headline, so the issue
+  // is still visible loud-and-clear; the chip just gets the softer
+  // may_work treatment when the bad axis is a minority.
+  const poorCount = known.filter((a) => a.status === "poor").length;
+  if (poorCount * 2 > known.length) return "not_recommended";
   return "may_work";
 }
 
@@ -495,15 +508,23 @@ function fitForSize(
   // Bottoms aren't touched: their width axis IS waist.
   let waistVerdict: AxisVerdict | undefined;
   let hipVerdict: AxisVerdict | undefined;
-  // Anarkalis are flared from the empire waist downward by design — the
-  // waist seam fits at the natural waist but the skirt below is meant to
-  // be many inches wider than the body waist/hip. Running the waist and
-  // hip axes on an anarkali correctly identifies that the garment is
-  // "looser than expected" but the verdict is misleading: that's the
-  // intended silhouette, not a fit problem. Skip these axes for anarkalis
-  // so the verdict only reflects bust + length, which is what the cut
-  // actually constrains.
-  if (product.category === "top" && product.garmentStyle !== "anarkali") {
+  // Per-style skips. Anarkali skips waist as well as hip — empire-waist
+  // flare from the waist seam down means the chart's "waist" is a body
+  // ref point, not a body-fit constraint. Other styles that flare at the
+  // hem (crop tops end above the hip, tunics flare lightly, kurtas
+  // straight-flare from waist) skip only hip: a kurta's hip-column on
+  // the chart describes the loose hem, not a body-fit point, so flagging
+  // "Looser than intended (Hip)" is misleading — it IS the silhouette.
+  const skipWaistAxis = product.garmentStyle === "anarkali";
+  const HIP_SKIP_STYLES: ReadonlyArray<typeof product.garmentStyle> = [
+    "crop_top",
+    "tunic",
+    "kurta_short",
+    "kurta_long",
+    "anarkali",
+  ];
+  const skipHipAxis = HIP_SKIP_STYLES.includes(product.garmentStyle);
+  if (product.category === "top" && !skipWaistAxis) {
     const bodyWaist = garment.waist;
     const garmentFlatWaist = garmentFlatRow?.waist;
     if (
@@ -520,7 +541,8 @@ function fitForSize(
         title: product.title,
       });
     }
-
+  }
+  if (product.category === "top" && !skipHipAxis) {
     const bodyHip = garment.hip;
     const garmentFlatHip = garmentFlatRow?.hip;
     if (
